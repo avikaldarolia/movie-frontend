@@ -3,6 +3,7 @@ import { FiLogOut } from 'react-icons/fi';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useFirebaseAuth } from '../context/FirebaseAuthContext';
+import util from '../assets/util.jpeg';
 const Navbar = () => {
   const navigate = useNavigate();
   const user = useFirebaseAuth();
@@ -12,9 +13,14 @@ const Navbar = () => {
   };
   return (
     <div className="flex bg-black items-center">
-      <p className="text-white py-5">Navbar</p>
+      <div className="flex items-center">
+        {/* <img className="h-16" src={util} alt="" /> */}
+        <Link to="/">
+          <p className="text-white py-5 ml-12 cursor-pointer">Bot-Movies</p>
+        </Link>
+      </div>
       {user && (
-        <p className="text-white py-5 mx-auto cursor-pointer">
+        <p className="text-[#f9790e] py-5 mx-auto cursor-pointer hover:text-white">
           <Link to="/playlists">My Playlists</Link>
         </p>
       )}
