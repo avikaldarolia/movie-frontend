@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { useToast } from '@chakra-ui/react';
-// import { app } from '../firebase-config';
+import { app } from '../firebase-config';
 import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -36,7 +35,7 @@ const Auth = ({ title }) => {
             'Auth Token',
             response._tokenResponse.refreshToken
           );
-        //   toast.success('Registeration Successfull');
+          //   toast.success('Registeration Successfull');
           navigate('/');
         })
         .catch((err) => {
@@ -49,7 +48,7 @@ const Auth = ({ title }) => {
     else {
       signInWithEmailAndPassword(authentication, inputs.email, inputs.password)
         .then((response) => {
-        //   toast.success('Login Successfull');
+          //   toast.success('Login Successfull');
           sessionStorage.setItem(
             'Auth Token',
             response._tokenResponse.refreshToken
