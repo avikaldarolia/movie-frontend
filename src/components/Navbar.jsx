@@ -6,11 +6,6 @@ import { useFirebaseAuth } from '../context/FirebaseAuthContext';
 const Navbar = () => {
   const navigate = useNavigate();
   const user = useFirebaseAuth();
-  // useEffect(() => {
-
-  // }, [third])
-
-  console.log(user);
   const handleLogout = () => {
     sessionStorage.removeItem('Auth Token');
     navigate('/login');

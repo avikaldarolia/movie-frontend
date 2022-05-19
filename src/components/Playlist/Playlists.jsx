@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from './Navbar';
-import { GrAddCircle } from 'react-icons/gr';
+import Navbar from '../Navbar';
 import {
   Modal,
   ModalOverlay,
@@ -10,23 +9,23 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Button,
-  Checkbox,
-  CheckboxGroup,
   Input,
-  HStack,
   RadioGroup,
   Stack,
   Radio,
 } from '@chakra-ui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+// import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
+import { samplePlaylists } from '../../util/samplePlaylists';
+import PlayCard from './PlayCard';
 const Playlists = () => {
+  // eslint-disable-next-line
+  // const user = useFirebaseAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [val, setVal] = useState('1');
   const [name, setName] = useState('');
-  const [playlist, setPlaylist] = useState([{ name: '', mode: '' }]);
+  const [playlist, setPlaylist] = useState(samplePlaylists);
   const handleSave = (e) => {
     console.log(val, name);
     if (name.length < 1) {
@@ -34,7 +33,7 @@ const Playlists = () => {
       return;
     }
     let mode = 'public';
-    if (val == '2') {
+    if (val === '2') {
       mode = 'private';
     }
     let elem = {
@@ -60,9 +59,18 @@ const Playlists = () => {
           Create a Playlist
         </button>
       </div>
-      <p className="ml-16 text-4xl mt-3">
-        You dont't have any playlists yet...
-      </p>
+      {playlist ? (
+        <div className="grid md:grid-cols-4 gap-4 mx-32 mt-16">
+          {playlist.map((ply, indx) => (
+            <PlayCard key={indx} name={ply.name} id={ply.id} mode={ply.mode} />
+          ))}
+        </div>
+      ) : (
+        <p className="ml-16 text-4xl mt-3">
+          You dont't have any playlists yet...
+        </p>
+      )}
+
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent className="flex my-auto">
@@ -96,8 +104,6 @@ const Playlists = () => {
           <ModalFooter>
             <button
               className="text-white bg-black cursor-pointer px-3 py-2 rounded-xl"
-              //   onClick={onClose}
-              //   disabled={val === '' ? 'true' : 'false'}
               onClick={handleSave}
             >
               Save
