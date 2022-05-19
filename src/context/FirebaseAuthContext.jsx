@@ -1,16 +1,25 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import firebase from 'firebase/compat/app';
-// import { useNavigate } from 'react-router';
-
-const FirebaseAuthContext = createContext;
+// import firebase from 'firebase/compat/app';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useNavigate } from 'react-router';
+import { auth } from '../firebase-config';
+const FirebaseAuthContext = createContext();
 
 const FirebaseAuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  // const navigate = useNavigate();
+  const [user, setUser] = useState();
   const value = { user };
 
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(setUser);
-    return unsubscribe;
+    const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
+      console.log('Auth', currentuser);
+      setUser(currentuser);
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
@@ -19,20 +28,20 @@ const FirebaseAuthProvider = ({ children }) => {
     </FirebaseAuthContext.Provider>
   );
 };
+
 const useFirebaseAuth = () => {
-  // const navigate = useNavigate();
   const context = useContext(FirebaseAuthContext);
-  // useEffect(() => {
-  //   if (context === undefined) {
-  //     navigate('/login');
-  //     // return;
-  //   }
-  // }, [context]);
-  console.log(context);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (context === undefined) {
+      navigate('/login');
+    }
+  }, [context]);
   if (context === undefined) {
     // navigate('/login');
-    return;
+    return undefined;
   }
   return context.user;
 };
+
 export { FirebaseAuthProvider, useFirebaseAuth };

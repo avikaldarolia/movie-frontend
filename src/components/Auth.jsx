@@ -35,7 +35,6 @@ const Auth = ({ title }) => {
             'Auth Token',
             response._tokenResponse.refreshToken
           );
-          //   toast.success('Registeration Successfull');
           navigate('/');
         })
         .catch((err) => {
@@ -48,7 +47,6 @@ const Auth = ({ title }) => {
     else {
       signInWithEmailAndPassword(authentication, inputs.email, inputs.password)
         .then((response) => {
-          //   toast.success('Login Successfull');
           sessionStorage.setItem(
             'Auth Token',
             response._tokenResponse.refreshToken

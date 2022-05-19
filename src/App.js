@@ -3,11 +3,7 @@
 import React, { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router';
 // import { app } from './firebase-config';
-// import {
-//   getAuth,
-//   signInWithEmailAndPassword,
-//   createUserWithEmailAndPassword,
-// } from 'firebase/auth';
+
 import {
   FirebaseAuthProvider,
   useFirebaseAuth,
@@ -20,20 +16,19 @@ function App() {
   const navigate = useNavigate();
   useEffect(() => {
     let authToken = sessionStorage.getItem('Auth Token');
-
-    if (authToken) {
-      navigate('/');
+    if (!authToken) {
+      navigate('/login');
     }
   }, []);
-  const user = useFirebaseAuth();
-  console.log(user);
+  // const user = useFirebaseAuth();
+  // console.log(user);
   // useEffect(() => {
   //   if (!user) {
   //     navigate('/');
   //   }
   // }, [user]);
   return (
-    // <FirebaseAuthProvider>
+    <FirebaseAuthProvider>
     <div className="">
       <Routes>
         <Route path="signup" element={<Auth title={'Signup'} />} />
@@ -43,7 +38,7 @@ function App() {
         <Route path="/playlists" element={<Playlists />} />
       </Routes>
     </div>
-    // </FirebaseAuthProvider>
+     </FirebaseAuthProvider>
   );
 }
 
