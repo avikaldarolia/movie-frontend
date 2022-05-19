@@ -9,10 +9,10 @@ import {
   useFirebaseAuth,
 } from './context/FirebaseAuthContext';
 import Homepage from './components/Homepage';
-import MovieDetail from './components/MovieDetail';
 import Auth from './components/Auth';
 import Playlists from './components/Playlist/Playlists';
 import PlayDetail from './components/Playlist/PlayDetail';
+import MovieDetail from './components/Movie/MovieDetail';
 function App() {
   const navigate = useNavigate();
   useEffect(() => {
@@ -35,7 +35,7 @@ function App() {
           <Route path="signup" element={<Auth title={'Signup'} />} />
           <Route path="login" element={<Auth title={'Login'} />} />
           <Route path="/" element={<Homepage />} />
-          <Route path="/detail" element={<MovieDetail />} />
+          <Route path="/movie/:id" element={<MovieDetail />} />
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/playlists/:id" element={<PlayDetail />} />
         </Routes>

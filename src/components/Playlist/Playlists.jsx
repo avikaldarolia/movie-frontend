@@ -49,8 +49,8 @@ const Playlists = () => {
     <div className="w-full ">
       <ToastContainer />
       <Navbar />
-      <div className="flex justify-between items-center">
-        <p className="ml-16 text-5xl mt-6">Your Playlists </p>
+      <div className="flex justify-between items-center mt-6">
+        <p className="ml-16 text-5xl ">Your Playlists </p>
         <button
           style={{ backgroundColor: '#f9790e' }}
           onClick={onOpen}
