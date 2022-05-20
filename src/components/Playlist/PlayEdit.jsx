@@ -1,7 +1,7 @@
 import { Radio, RadioGroup, Stack } from '@chakra-ui/react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import { db } from '../../firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,6 +11,8 @@ import { IoMdArrowRoundBack } from 'react-icons/io';
 const PlayEdit = () => {
   const params = useParams();
   const navigate = useNavigate();
+  //   const loc = useLocation();
+  //   console.log('LOC', loc);
   const [playlist, setPlaylist] = useState();
   const [name, setName] = useState(playlist?.name);
   const [val, setVal] = useState('1');
@@ -25,7 +27,7 @@ const PlayEdit = () => {
     };
     getPlay();
   }, [params.id]);
-  //   console.log(params.id);
+  console.log(playlist);
   const handleSave = async (e) => {
     e.preventDefault();
     if (name.length < 1) {
@@ -41,8 +43,17 @@ const PlayEdit = () => {
     await updateDoc(playRef, {
       name: name,
       mode: mode,
-    }).then(() => navigate('/playlists'));
+    }).then(() => navigate(-1));
   };
+  console.log(playlist);
+  useEffect(() => {
+    setName(playlist?.name);
+    if (playlist?.mode === 'private') {
+      setVal('2');
+    } else {
+      setVal('1');
+    }
+  }, [playlist]);
   return (
     <div className="w-full">
       <ToastContainer />

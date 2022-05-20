@@ -36,7 +36,7 @@ const PlayDetail = () => {
     };
     getPlay();
   }, [params.id]);
-
+  // console.log(playlist);
   return (
     <div className="w-full">
       <ToastContainer />
@@ -51,7 +51,7 @@ const PlayDetail = () => {
         <div className="flex items-center rounded-xl py-5 bg-gray-200 ml-4 w-fit px-10 ">
           <p className="text-5xl ">Movies in: {playlist?.name}</p>
           <div className="ml-5 mt-1.5 flex items-center bg-white rounded-xl py-1 px-2">
-            {playlist?.mode === 'Private' ? (
+            {playlist?.mode === 'private' ? (
               <ImLock className="" style={{ color: '#f9790e' }} />
             ) : (
               <ImUnlocked className="mr-1" style={{ color: '#f9790e' }} />
