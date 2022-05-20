@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+// import '/App.css';
 // import { app } from '../firebase-config';
-import { collection, addDoc, setDoc, doc } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BiHide } from 'react-icons/bi';
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -15,6 +17,8 @@ import { db } from '../firebase-config';
 const Auth = ({ title }) => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({ email: '', password: '' });
+  const [show, setShow] = useState(false);
+
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState,
@@ -78,49 +82,60 @@ const Auth = ({ title }) => {
     }
   };
   return (
-    <div className="flex flex-col mx-auto w-1/5 p-8 rounded-xl bg-red-400 mt-32">
-      <ToastContainer />
-      <p className="font-bold text-3xl py-2">{title}</p>
-      <label className="my-2" htmlFor="">
-        Email
-      </label>
-      <input
-        onChange={handleChange}
-        name="email"
-        value={inputs.email}
-        type="text"
-        placeholder="Email"
-      />
-      <label className="my-2" htmlFor="">
-        Password
-      </label>
-      <input
-        onChange={handleChange}
-        value={inputs.password}
-        name="password"
-        type="text"
-        placeholder="Password"
-      />
-      <button className="bg-green-200 mt-3" onClick={handleSubmit}>
-        Submit
-      </button>
-      {title === 'Login' ? (
-        <p className="text-xs mt-3">
-          New here?
-          <Link to="/signup">
-            {' '}
-            <u>Signup</u>
-          </Link>
-        </p>
-      ) : (
-        <p className="text-xs mt-3">
-          Already have an account?
-          <Link to="/login">
-            {' '}
-            <u>Login</u>
-          </Link>
-        </p>
-      )}
+    <div className="App w-screen h-screen flex flex-col">
+      <p className="bg-white w-fit px-3 py-4 rounded-xl text-4xl font-bold mx-auto mt-16">
+        Bot Movies
+      </p>
+      <div className="flex flex-col mx-auto mt-10 w-1/5 p-8 rounded-xl bg-[#f9790e]">
+        <ToastContainer />
+        <p className="font-bold text-3xl py-2">{title}</p>
+        <label className="my-2 text-lg">Email</label>
+        <input
+          onChange={handleChange}
+          name="email"
+          value={inputs.email}
+          type="text"
+          className="py-2 rounded-lg pl-2"
+          placeholder="Email"
+        />
+        <label className="my-2 text-lg">Password</label>
+        <div className="w-full relative flex items-center">
+          <input
+            onChange={handleChange}
+            value={inputs.password}
+            name="password"
+            type={show ? 'text' : 'password'}
+            className="py-2 rounded-lg pl-2 w-full"
+            placeholder="Password"
+          />
+          <button className="absolute right-3" onClick={() => setShow(!show)}>
+            <BiHide />
+          </button>
+        </div>
+        <button
+          className="bg-black py-2 rounded-lg text-white mt-6"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
+        {title === 'Login' ? (
+          <p className="text-xs mt-3">
+            New here?
+            <Link to="/signup">
+              {' '}
+              <u>Signup</u>
+            </Link>
+          </p>
+        ) : (
+          <p className="text-xs mt-3">
+            Already have an account?
+            <Link to="/login">
+              {' '}
+              <u>Login</u>
+            </Link>
+          </p>
+        )}
+      </div>
     </div>
   );
 };
