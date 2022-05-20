@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Modal,
   ModalBody,
@@ -17,6 +17,7 @@ import NewPlaylistModal from './NewPlaylistModal';
 import ExistingPlaylist from './ExistingPlaylist';
 
 const PlayModal = ({ isOpen, onClose, movie }) => {
+  const [tabIndex, setTabIndex] = useState(0);
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -24,7 +25,11 @@ const PlayModal = ({ isOpen, onClose, movie }) => {
         <ModalHeader>Add to Playlist</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Tabs isFitted variant="enclosed">
+          <Tabs
+            onChange={(index) => setTabIndex(index)}
+            isFitted
+            variant="enclosed"
+          >
             <TabList mb="1em">
               <Tab>New Playlist</Tab>
               <Tab>Existing Playlist</Tab>
@@ -34,7 +39,11 @@ const PlayModal = ({ isOpen, onClose, movie }) => {
                 <NewPlaylistModal movie={movie} onClose={onClose} />
               </TabPanel>
               <TabPanel>
-                <ExistingPlaylist onClose={onClose} />
+                <ExistingPlaylist
+                  tabIndex={tabIndex}
+                  onClose={onClose}
+                  movie={movie}
+                />
               </TabPanel>
             </TabPanels>
           </Tabs>

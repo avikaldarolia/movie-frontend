@@ -13,7 +13,6 @@ const NewPlaylistModal = ({ onClose, movie }) => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    // console.log(name, val, movie, user.uid);
     if (name.length < 1) {
       toast.error('No name entered');
       return;
