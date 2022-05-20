@@ -5,9 +5,11 @@ import Navbar from '../../components/Navbar';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 // import SearchBar from '../../components/SearchBar';
 import axios from 'axios';
-
+import { useDisclosure } from '@chakra-ui/react';
+import NewPlaylistModal from './NewPlaylistModal';
 const MovieDetail = () => {
   const params = useParams();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   // console.log(params.id);
   const [movie, setMovie] = useState();
   const navigate = useNavigate();
@@ -33,9 +35,13 @@ const MovieDetail = () => {
         />
         <p className="text-2xl ml-3">Search Results</p>
         <div className="ml-auto mr-10">
-          <button className="bg-[#f9790e] text-black hover:text-white px-4 py-2 rounded-lg">
+          <button
+            onClick={onOpen}
+            className="bg-[#f9790e] text-black hover:text-white px-4 py-2 rounded-lg"
+          >
             New Playlist
           </button>
+          <NewPlaylistModal isOpen={isOpen} onClose={onClose} movie={movie} />
           <button className="bg-[#f9790e] text-black hover:text-white px-4 py-2 rounded-lg ml-6">
             Add to playlist
           </button>
@@ -86,63 +92,3 @@ const MovieDetail = () => {
 };
 
 export default MovieDetail;
-
-{
-  /* <div className="text-xl font-medium py-2">
-            <p>Authors : </p>
-          </div>
-          <div className="flex justify-between">
-            <div className="text-xl font-medium py-2">
-              <p>Publisher : </p>
-            </div>
-            <div className="text-xl font-medium py-2">
-              <p>Date Published : </p>
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <div className="text-xl font-medium py-2">
-              <p>Overview : </p>
-            </div>
-            <div className="text-xl font-medium py-2">
-              <p>Edition : </p>
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <div className="text-xl font-medium py-2">
-              <p>Binding : </p>
-            </div>
-            <div className="text-xl font-medium py-2">
-              <p>Pages : </p>
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <div className="text-xl font-medium py-2">
-              <p>isbn : </p>
-            </div>
-            <div className="text-xl font-medium py-2">
-              <p>isbn13 : </p>
-            </div>
-          </div> */
-}
-{
-  /* <div className="flex justify-between py-2">
-            <button
-              className="text-xl font-medium py-2 bg-green-300 rounded-xl px-4"
-              //   onClick={clickHandler}
-            >
-              Add to Collection
-            </button>
-            <button
-              className="text-xl font-medium py-2 bg-green-300 rounded-xl px-4"
-              //   onClick={() => addToWishlist()}
-            >
-              Add to wishlist
-            </button>
-            <button
-              className="text-xl font-medium py-2 bg-green-300 rounded-xl px-4"
-              //   onClick={() => addToReadBooks()}
-            >
-              Add to read books list
-            </button>
-          </div> */
-}

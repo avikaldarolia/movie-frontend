@@ -14,6 +14,7 @@ import Playlists from './components/Playlist/Playlists';
 import PlayDetail from './components/Playlist/PlayDetail';
 import MovieDetail from './components/Movie/MovieDetail';
 import PlayEdit from './components/Playlist/PlayEdit';
+
 function App() {
   const navigate = useNavigate();
   useEffect(() => {

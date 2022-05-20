@@ -36,12 +36,14 @@ const PlayDetail = () => {
     };
     getPlay();
   }, [params.id]);
-  // console.log(playlist);
+
+  console.log(playlist, 'test');
+
   return (
     <div className="w-full">
       <ToastContainer />
       <Navbar />
-      <div className="flex items-center ml-12 mt-16">
+      <div className="flex items-center ml-12 mt-8">
         <Link to="/playlists">
           <IoMdArrowRoundBack
             className="w-10 h-10 hover:fill-black cursor-pointer"
@@ -75,19 +77,19 @@ const PlayDetail = () => {
           </div>
         </div>
       </div>
-      {playlist?.movie === undefined || playlist?.movies.length === 0 ? (
+      {playlist?.movies === undefined || playlist?.movies?.length < 1 ? (
         <p className="ml-32 mt-16 text-3xl">
           Seems a bit empty here... <br /> Add some movies to see the changes.
         </p>
       ) : (
-        <div className="grid md:grid-cols-4 gap-6 mx-32 mt-16">
-          {playlist?.movies.map((movie, indx) => (
+        <div className="grid md:grid-cols-4 gap-6 mx-32 mt-8">
+          {playlist?.movies?.map((movie, indx) => (
             <MovieCard
               key={indx}
-              name={movie.name}
-              id={movie.id}
-              poster={movie.poster}
-              imdb={movie.imdbId}
+              name={movie.Title}
+              poster={movie.Poster}
+              imdb={movie.imdbID}
+              pid={params.id}
             />
           ))}
         </div>
@@ -97,9 +99,3 @@ const PlayDetail = () => {
 };
 
 export default PlayDetail;
-
-{
-}
-{
-  /* */
-}

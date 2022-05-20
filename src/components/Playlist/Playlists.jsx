@@ -36,7 +36,7 @@ const Playlists = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [val, setVal] = useState('1');
   const [name, setName] = useState('');
-  const [playlist, setPlaylist] = useState();
+  const [playlist, setPlaylist] = useState([]);
 
   useEffect(() => {
     if (!user) {
@@ -54,7 +54,7 @@ const Playlists = () => {
         .catch((err) => console.log(err));
     };
     func();
-  }, [user]);
+  }, []);
   console.log(playlist);
   const handleSave = async (e) => {
     e.preventDefault();
@@ -76,6 +76,7 @@ const Playlists = () => {
       uid: user.uid,
       name: name,
       mode: mode,
+      movies: [],
     });
     console.log(docRef.id, 'docRef');
     // adding pid
@@ -105,7 +106,7 @@ const Playlists = () => {
         </button>
       </div>
 
-      {playlist ? (
+      {playlist?.length > 0 ? (
         <div className="grid md:grid-cols-4 gap-4 mx-32 mt-16">
           {playlist &&
             playlist.map((ply, indx) => (

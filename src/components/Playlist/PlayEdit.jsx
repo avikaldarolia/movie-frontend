@@ -11,8 +11,6 @@ import { IoMdArrowRoundBack } from 'react-icons/io';
 const PlayEdit = () => {
   const params = useParams();
   const navigate = useNavigate();
-  //   const loc = useLocation();
-  //   console.log('LOC', loc);
   const [playlist, setPlaylist] = useState();
   const [name, setName] = useState(playlist?.name);
   const [val, setVal] = useState('1');
