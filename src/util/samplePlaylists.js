@@ -7,7 +7,7 @@ export const samplePlaylists = [
       {
         id: 1,
         name: 'Harry Porter',
-        imdbId: '',
+        imdbId: 'tt1201607',
         poster:
           'https://m.media-amazon.com/images/M/MV5BMGVmMWNiMDktYjQ0Mi00MWIxLTk0N2UtN2ZlYTdkN2IzNDNlXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg',
       },
@@ -21,7 +21,7 @@ export const samplePlaylists = [
       {
         id: 1,
         name: 'Harry Porter',
-        imdbId: '',
+        imdbId: 'tt1201607',
         poster:
           'https://m.media-amazon.com/images/M/MV5BMGVmMWNiMDktYjQ0Mi00MWIxLTk0N2UtN2ZlYTdkN2IzNDNlXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg',
       },

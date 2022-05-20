@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 // import { app } from '../firebase-config';
+import { collection, addDoc, setDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,10 +10,10 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from 'firebase/auth';
+import { db } from '../firebase-config';
 
 const Auth = ({ title }) => {
   const navigate = useNavigate();
-
   const [inputs, setInputs] = useState({ email: '', password: '' });
   const handleChange = (e) => {
     setInputs((prevState) => ({
@@ -20,21 +21,35 @@ const Auth = ({ title }) => {
       [e.target.name]: e.target.value,
     }));
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const authentication = getAuth();
     // signup
     if (title !== 'Login') {
-      createUserWithEmailAndPassword(
+      await createUserWithEmailAndPassword(
         authentication,
         inputs.email,
         inputs.password
       )
-        .then((response) => {
+        .then(async (response) => {
           sessionStorage.setItem(
             'Auth Token',
             response._tokenResponse.refreshToken
           );
+          console.log(response);
+          // await addDoc(collection(db, 'users'), {
+          //   uid: response.user.uid,
+          //   email: inputs.email,
+          // });
+          await setDoc(doc(db, 'users', response.user.uid), {
+            uid: response.user.uid,
+            email: inputs.email,
+          });
+          // await firestore().db.collection('users').doc(response.user.uid).set({
+          //   uid: response.user.uid,
+          //   email: inputs.email,
+          // });
+          // .then(() => navigate('/'));
           navigate('/');
         })
         .catch((err) => {
