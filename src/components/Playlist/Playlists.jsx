@@ -22,7 +22,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
 // import { samplePlaylists } from '../../util/samplePlaylists';
 import PlayCard from './PlayCard';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+} from 'firebase/firestore';
 import { db } from '../../firebase-config';
 
 const Playlists = () => {
@@ -39,23 +45,19 @@ const Playlists = () => {
       return;
     }
     const func = async () => {
-      // console.log(user.uid, 'user');
       await getDocs(collection(db, 'playlists'))
         .then((res) => {
           let list = res.docs
             .map((doc) => doc.data())
-            .filter((li) => li.uid == user?.uid);
+            .filter((li) => li.uid === user?.uid);
           setPlaylist(list);
         })
         .catch((err) => console.log(err));
-
-      // console.log(play, 'Play');
     };
     func();
   }, [user]);
-  // console.log(playlist, 'playlist');
+  console.log(playlist);
   const handleSave = async (e) => {
-    // console.log(val, name);
     e.preventDefault();
     if (name.length < 1) {
       toast.error('No name entered');
@@ -71,15 +73,18 @@ const Playlists = () => {
     };
     let play = [...playlist, elem];
     setPlaylist(play);
-    await addDoc(collection(db, 'playlists'), {
+    const docRef = await addDoc(collection(db, 'playlists'), {
       uid: user.uid,
       name: name,
       mode: mode,
     });
-    // await setDoc(doc(db, 'playlists', response.user.uid), {
-    //   uid: response.user.uid,
-    //   email: inputs.email,
-    // });
+    console.log(docRef.id, 'docRef');
+    // adding pid
+    const playRef = doc(db, 'playlists', docRef.id);
+    await updateDoc(playRef, {
+      pid: docRef.id,
+    });
+
     onClose();
   };
 
@@ -106,6 +111,7 @@ const Playlists = () => {
                 name={ply.name}
                 id={ply.id}
                 mode={ply.mode}
+                pid={ply.pid}
               />
             ))}
         </div>
