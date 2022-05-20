@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-lone-blocks */
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import Navbar from '../Navbar';
 import { samplePlaylists } from '../../util/samplePlaylists';
@@ -7,12 +8,23 @@ import { ImLock } from 'react-icons/im';
 import { ImUnlocked } from 'react-icons/im';
 import MovieCard from '../Movie/MovieCard';
 import { Link } from 'react-router-dom';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../firebase-config';
 const PlayDetail = () => {
   const params = useParams();
-  // eslint-disable-next-line eqeqeq
-  let playlist = samplePlaylists.find((ply) => params.id == ply.id);
-  // console.log(playlist.movies);
-  let mode = playlist.mode;
+  const [playlist, setPlaylist] = useState();
+  useEffect(() => {
+    const getNote = async () => {
+      const play = await getDoc(doc(db, 'playlists', params.id));
+      if (play.exists()) {
+        setPlaylist(play.data());
+      } else {
+        console.log("Playlist doesn't exist");
+      }
+    };
+    getNote();
+  }, [params.id]);
+
   return (
     <div className="w-full">
       <Navbar />
@@ -24,24 +36,25 @@ const PlayDetail = () => {
           />
         </Link>
         <div className="flex items-center rounded-xl py-5 bg-gray-200 ml-4 w-fit px-10 ">
-          <p className="text-5xl ">Movies in: {playlist.name} </p>
+          <p className="text-5xl ">Movies in: {playlist?.name}</p>
           <div className="ml-5 mt-1.5 flex items-center bg-white rounded-xl py-1 px-2">
-            {mode === 'Private' ? (
+            {playlist?.mode === 'Private' ? (
               <ImLock className="" style={{ color: '#f9790e' }} />
             ) : (
               <ImUnlocked className="mr-1" style={{ color: '#f9790e' }} />
             )}
-            <p>{mode}</p>
+            <p>{playlist?.mode}</p>
           </div>
         </div>
       </div>
-      {playlist.movies.length === 0 ? (
+      {/* /* movies abhi add krni h phele => fir work krega ye */}
+      {playlist?.movie === undefined || playlist?.movies.length === 0 ? (
         <p className="ml-32 mt-16 text-3xl">
           Seems a bit empty here... <br /> Add some movies to see the changes.
         </p>
       ) : (
         <div className="grid md:grid-cols-4 gap-6 mx-32 mt-16">
-          {playlist.movies.map((movie, indx) => (
+          {playlist?.movies.map((movie, indx) => (
             <MovieCard
               key={indx}
               name={movie.name}
@@ -57,3 +70,9 @@ const PlayDetail = () => {
 };
 
 export default PlayDetail;
+
+{
+}
+{
+  /* */
+}
