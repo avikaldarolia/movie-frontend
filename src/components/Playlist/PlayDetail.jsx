@@ -1,32 +1,45 @@
 /* eslint-disable no-lone-blocks */
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import Navbar from '../Navbar';
-import { samplePlaylists } from '../../util/samplePlaylists';
+// import { samplePlaylists } from '../../util/samplePlaylists';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { ImLock } from 'react-icons/im';
 import { ImUnlocked } from 'react-icons/im';
 import MovieCard from '../Movie/MovieCard';
 import { Link } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase-config';
+import { ToastContainer, toast } from 'react-toastify';
+import { MdEdit } from 'react-icons/md';
+import 'react-toastify/dist/ReactToastify.css';
+import { AiTwotoneDelete } from 'react-icons/ai';
 const PlayDetail = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const [playlist, setPlaylist] = useState();
+  const handleDelete = async (e) => {
+    const playRef = doc(db, 'playlists', playlist?.pid);
+    await deleteDoc(playRef);
+    navigate('/playlists');
+    return;
+  };
   useEffect(() => {
-    const getNote = async () => {
+    const getPlay = async () => {
       const play = await getDoc(doc(db, 'playlists', params.id));
       if (play.exists()) {
         setPlaylist(play.data());
       } else {
         console.log("Playlist doesn't exist");
+        toast.error("Playlist doesn't exist");
       }
     };
-    getNote();
+    getPlay();
   }, [params.id]);
 
   return (
     <div className="w-full">
+      <ToastContainer />
       <Navbar />
       <div className="flex items-center ml-12 mt-16">
         <Link to="/playlists">
@@ -44,6 +57,21 @@ const PlayDetail = () => {
               <ImUnlocked className="mr-1" style={{ color: '#f9790e' }} />
             )}
             <p>{playlist?.mode}</p>
+          </div>
+          <div className="flex items-center ml-32 bg-white rounded-xl py-2 px-3">
+            <button
+              onClick={() => navigate(`/playlists/edit/${params.id}`)}
+              className="flex items-center px-3 bg-[#f9790e] py-2 rounded-xl hover:bg-orange-600"
+            >
+              <MdEdit style={{ color: 'black' }} />
+              <p className="pl-1">Edit</p>
+            </button>
+            <button className="ml-4 flex items-center px-3 bg-[#f9790e] py-2 rounded-xl hover:bg-orange-600">
+              <AiTwotoneDelete style={{ color: 'black' }} />
+              <p className="pl-1" onClick={handleDelete}>
+                Delete
+              </p>
+            </button>
           </div>
         </div>
       </div>

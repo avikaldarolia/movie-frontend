@@ -13,6 +13,7 @@ import Auth from './components/Auth';
 import Playlists from './components/Playlist/Playlists';
 import PlayDetail from './components/Playlist/PlayDetail';
 import MovieDetail from './components/Movie/MovieDetail';
+import PlayEdit from './components/Playlist/PlayEdit';
 function App() {
   const navigate = useNavigate();
   useEffect(() => {
@@ -38,6 +39,7 @@ function App() {
           <Route path="/movie/:id" element={<MovieDetail />} />
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/playlists/:id" element={<PlayDetail />} />
+          <Route path="/playlists/edit/:id" element={<PlayEdit />} />
         </Routes>
       </div>
     </FirebaseAuthProvider>

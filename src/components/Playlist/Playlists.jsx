@@ -93,7 +93,10 @@ const Playlists = () => {
       <ToastContainer />
       <Navbar />
       <div className="flex justify-between items-center mt-6">
-        <p className="ml-16 text-5xl ">Your Playlists </p>
+        <p className="ml-16 text-5xl ">
+          Your Playlists{' '}
+          <span className="font-light text-xl">(Click for details)</span>{' '}
+        </p>
         <button
           style={{ backgroundColor: '#f9790e' }}
           onClick={onOpen}
@@ -102,6 +105,7 @@ const Playlists = () => {
           Create a Playlist
         </button>
       </div>
+
       {playlist ? (
         <div className="grid md:grid-cols-4 gap-4 mx-32 mt-16">
           {playlist &&
