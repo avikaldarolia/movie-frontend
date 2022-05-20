@@ -75,7 +75,6 @@ const PlayDetail = () => {
           </div>
         </div>
       </div>
-      {/* /* movies abhi add krni h phele => fir work krega ye */}
       {playlist?.movie === undefined || playlist?.movies.length === 0 ? (
         <p className="ml-32 mt-16 text-3xl">
           Seems a bit empty here... <br /> Add some movies to see the changes.

@@ -32,7 +32,6 @@ import {
 import { db } from '../../firebase-config';
 
 const Playlists = () => {
-  // eslint-disable-next-line
   const user = useFirebaseAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [val, setVal] = useState('1');

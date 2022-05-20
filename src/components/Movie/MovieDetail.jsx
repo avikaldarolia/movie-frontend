@@ -32,6 +32,14 @@ const MovieDetail = () => {
           style={{ color: '#f9790e' }}
         />
         <p className="text-2xl ml-3">Search Results</p>
+        <div className="ml-auto mr-10">
+          <button className="bg-[#f9790e] text-black hover:text-white px-4 py-2 rounded-lg">
+            New Playlist
+          </button>
+          <button className="bg-[#f9790e] text-black hover:text-white px-4 py-2 rounded-lg ml-6">
+            Add to playlist
+          </button>
+        </div>
       </div>
       <div className="flex mx-10 rounded-2xl mt-10 py-16 bg-gray-200 border border-[#f9790e]">
         <img src={movie?.Poster} className="h-96 ml-16" alt="" />
