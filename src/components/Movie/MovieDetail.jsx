@@ -6,7 +6,8 @@ import { IoMdArrowRoundBack } from 'react-icons/io';
 // import SearchBar from '../../components/SearchBar';
 import axios from 'axios';
 import { useDisclosure } from '@chakra-ui/react';
-import NewPlaylistModal from './NewPlaylistModal';
+import PlayModal from './PlayModal';
+
 const MovieDetail = () => {
   const params = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,12 +40,16 @@ const MovieDetail = () => {
             onClick={onOpen}
             className="bg-[#f9790e] text-black hover:text-white px-4 py-2 rounded-lg"
           >
-            New Playlist
+            Add to Playlist
           </button>
-          <NewPlaylistModal isOpen={isOpen} onClose={onClose} movie={movie} />
-          <button className="bg-[#f9790e] text-black hover:text-white px-4 py-2 rounded-lg ml-6">
+
+          <PlayModal isOpen={isOpen} onClose={onClose} movie={movie} />
+          {/* <button
+            onClick={onOpen}
+            className="bg-[#f9790e] text-black hover:text-white px-4 py-2 rounded-lg ml-6"
+          >
             Add to playlist
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="flex mx-10 rounded-2xl mt-10 py-16 bg-gray-200 border border-[#f9790e]">
