@@ -21,7 +21,7 @@ const MovieCard = ({ name, poster, imdb, pid, indx, userUid, playlist }) => {
     navigate('/playlists');
   };
   return (
-    <div className="bg-gray-200 rounded-lg w-1/5 flex flex-col py-5 px-4 w-full cursor-pointer border border-[#f9790e]">
+    <div className="bg-gray-200 rounded-lg flex flex-col py-5 px-4 w-full cursor-pointer border border-[#f9790e]">
       <Link to={`/movie/${imdb}`}>
         <div className="">
           <img src={poster} className="h-80 mx-auto" alt="" />

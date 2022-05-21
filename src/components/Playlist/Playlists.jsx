@@ -37,6 +37,7 @@ const Playlists = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [rel, setRel] = useState(false);
   useEffect(() => {
+    console.log(user, 'user');
     const func = async () => {
       await getDocs(collection(db, 'playlists'))
         .then((res) => {
@@ -49,7 +50,7 @@ const Playlists = () => {
         .catch((err) => console.log(err));
     };
     func();
-  }, [rel]);
+  }, [rel, user]);
   const handleSave = async (e) => {
     e.preventDefault();
     if (name.length < 1) {
@@ -72,7 +73,7 @@ const Playlists = () => {
     await updateDoc(playRef, {
       pid: docRef.id,
     });
-    setRel(!rel);
+    setRel((rel) => !rel);
 
     onClose();
   };

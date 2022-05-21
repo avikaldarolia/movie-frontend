@@ -62,7 +62,7 @@ const PlayDetail = () => {
         });
     };
     getPlay();
-  }, [params.id]);
+  }, [params.id, user]);
 
   return (
     <div className="w-full">
@@ -82,7 +82,7 @@ const PlayDetail = () => {
           />
         </div>
       ) : (
-        <>
+        <div className="w-full flex flex-col">
           <div className="flex items-center ml-12 mt-8">
             <Link to="/playlists">
               <IoMdArrowRoundBack
@@ -139,7 +139,7 @@ const PlayDetail = () => {
               ))}
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );

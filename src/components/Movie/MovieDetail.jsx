@@ -23,11 +23,9 @@ const MovieDetail = () => {
     };
     getMovie();
   }, [params.id]);
-  console.log(movie);
   return (
     <div className="w-full h-full">
       <Navbar />
-      {/* <SearchBar /> */}
       <div className="flex items-center mt-5 ml-8">
         <IoMdArrowRoundBack
           onClick={() => navigate(-1)}

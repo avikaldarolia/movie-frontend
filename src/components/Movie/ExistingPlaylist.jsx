@@ -60,7 +60,7 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
     };
 
     func();
-  }, []);
+  }, [user]);
 
   return (
     <div className="flex flex-col">
