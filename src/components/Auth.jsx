@@ -76,7 +76,11 @@ const Auth = ({ title }) => {
       <p className="text-white mx-auto mt-16 text-5xl">Bot-Movies</p>
       <div className="flex w-full mt-16 h-fit">
         <div className="w-1/2 ml-64 bg-gray-200 rounded-tl-xl rounded-bl-xl">
-          <img src={wall} className="h-full w-fit" alt="" />
+          <img
+            src={wall}
+            className="h-full w-fit rounded-tl-xl rounded-bl-xl"
+            alt=""
+          />
         </div>
         <div className="flex flex-col mx-auto w-1/2 p-10 rounded-tr-xl rounded-br-xl bg-[#f9790e] mr-64">
           <ToastContainer />
