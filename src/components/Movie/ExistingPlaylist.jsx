@@ -1,23 +1,53 @@
-import { collection, getDocs } from 'firebase/firestore';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
 import { db } from '../../firebase-config';
-// import 'react-toastify/dist/ReactToastify.css';
-// import { ToastContainer, toast } from 'react-toastify';
 
 const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
   const user = useFirebaseAuth();
   const [selected, setSelected] = useState();
   const [playlist, setPlaylist] = useState();
-  console.log(tabIndex);
-  const handleSave = (e) => {
+  // const [submit, setSubmit] = useState(false);
+  // console.log(tabIndex);
+  // useEffect(() => {
+  //   const func = async () => {};
+  // }, [submit]);
+
+  const handleSave = async (e) => {
     e.preventDefault();
-    console.log('Test');
-    // console.log(selected, movie);
-    console.log(playlist?.mode, 'moviess');
-    // let movies = playlist?.movies;
-    // let fm = [...movies, movie];
-    // console.log(fm);
+    let selectedP = playlist?.find((p) => p.pid === selected);
+    console.log(selectedP, 'selected');
+    let oldMovies = selectedP.movies;
+    console.log(movie.imdbID, 'Movie IMDB');
+    // let check = oldMovies?.find((mv) => mv.imdbId === movie.imdbId);
+    // function strcmp(a) {
+    //   let b = movie.imdbID;
+    //   b = b.toString();
+    //   a = a.toString();
+    //   for (
+    //     var i = 0, n = Math.max(a.length, b.length);
+    //     i < n && a.charAt(i) === b.charAt(i);
+    //     ++i
+    //   );
+    //   if (i === n) return 0;
+    //   return a.charAt(i) > b.charAt(i) ? -1 : 1;
+    // }
+    // let check = oldMovies?.find(strcmp);
+    // let check = oldMovies?.find((m) => toString(movie.imdbID).equals(m.imdbID));
+    // console.log(check, 'CHECK');
+    // if (check !== undefined) {
+    //   toast.error('Movie already present inside this playlist');
+    //   return;
+    // }
+    oldMovies.push(movie);
+    const playRef = doc(db, 'playlists', selectedP?.pid);
+    await updateDoc(playRef, {
+      movies: oldMovies,
+    });
+    onClose();
   };
   useEffect(() => {
     const func = async () => {
@@ -30,14 +60,13 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
         })
         .catch((err) => console.log(err));
     };
-    if (tabIndex === 1) {
-      console.log('tet');
-      func();
-    }
+
+    func();
   }, []);
-  console.log(playlist);
+
   return (
     <div className="flex flex-col">
+      <ToastContainer />
       <p>Your Playlists</p>
       <select
         className="mt-4 py-2 w-fit px-2"
@@ -48,8 +77,8 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
         {playlist &&
           playlist?.map((play, indx) => (
             //   <div className="flex flex-col">{play.name}</div>
-            <option key={indx} value={play.name}>
-              {play.name}
+            <option key={indx} value={play?.pid}>
+              {play?.name}
             </option>
           ))}
       </select>
