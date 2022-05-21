@@ -29,7 +29,6 @@ const PlayDetail = () => {
   };
   useEffect(() => {
     const getPlay = async () => {
-      // const play = await getDoc(doc(db, 'playlists', params.id))
       await getDoc(doc(db, 'playlists', params.id))
         .then((play) => {
           if (play.exists()) {
@@ -41,24 +40,26 @@ const PlayDetail = () => {
               toast.error('This is a private playlist');
               setTimeout(() => {
                 navigate('/playlists');
-              }, 2000);
+              }, 6000);
               return;
             }
             setPlaylist(play.data());
           } else {
-            console.log("Playlist doesn't exist");
-            toast.error("Playlist doesn't exist");
+            toast.error("Playlist doesn't exist,\n Redirecting");
+            setTimeout(() => {
+              navigate('/playlists');
+            }, 6000);
           }
         })
-        .catch((err) => {
-          toast.error("Playlist doesn't exist");
-          navigate('/playlists');
+        .catch(() => {
+          toast.error("Playlist doesn't exist,\n Redirecting");
+          setTimeout(() => {
+            navigate('/playlists');
+          }, 6000);
         });
     };
     getPlay();
   }, [params.id]);
-
-  // console.log(playlist, 'test');
 
   return (
     <div className="w-full">

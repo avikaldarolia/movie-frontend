@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import '/App.css';
-// import { app } from '../firebase-config';
 import { setDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,7 +11,7 @@ import {
   createUserWithEmailAndPassword,
 } from 'firebase/auth';
 import { db } from '../firebase-config';
-
+import wall from '../assets/wall.jpeg';
 const Auth = ({ title }) => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({ email: '', password: '' });
@@ -40,20 +38,12 @@ const Auth = ({ title }) => {
             'Auth Token',
             response._tokenResponse.refreshToken
           );
-          console.log(response);
-          // await addDoc(collection(db, 'users'), {
-          //   uid: response.user.uid,
-          //   email: inputs.email,
-          // });
+
           await setDoc(doc(db, 'users', response.user.uid), {
             uid: response.user.uid,
             email: inputs.email,
           });
-          // await firestore().db.collection('users').doc(response.user.uid).set({
-          //   uid: response.user.uid,
-          //   email: inputs.email,
-          // });
-          // .then(() => navigate('/'));
+
           navigate('/');
         })
         .catch((err) => {
@@ -82,59 +72,62 @@ const Auth = ({ title }) => {
     }
   };
   return (
-    <div className="App w-screen h-screen flex flex-col">
-      <p className="bg-white w-fit px-3 py-4 rounded-xl text-4xl font-bold mx-auto mt-16">
-        Bot Movies
-      </p>
-      <div className="flex flex-col mx-auto mt-10 w-1/5 p-8 rounded-xl bg-[#f9790e]">
-        <ToastContainer />
-        <p className="font-bold text-3xl py-2">{title}</p>
-        <label className="my-2 text-lg">Email</label>
-        <input
-          onChange={handleChange}
-          name="email"
-          value={inputs.email}
-          type="text"
-          className="py-2 rounded-lg pl-2"
-          placeholder="Email"
-        />
-        <label className="my-2 text-lg">Password</label>
-        <div className="w-full relative flex items-center">
+    <div className="w-screen h-screen flex flex-col bg-black">
+      <p className="text-white mx-auto mt-16 text-5xl">Bot-Movies</p>
+      <div className="flex w-full mt-16 h-fit">
+        <div className="w-1/2 ml-64 bg-gray-200 rounded-tl-xl rounded-bl-xl">
+          <img src={wall} className="h-full w-fit" alt="" />
+        </div>
+        <div className="flex flex-col mx-auto w-1/2 p-10 rounded-tr-xl rounded-br-xl bg-[#f9790e] mr-64">
+          <ToastContainer />
+          <p className="font-bold text-3xl py-2">{title}</p>
+          <label className="my-2 text-lg">Email</label>
           <input
             onChange={handleChange}
-            value={inputs.password}
-            name="password"
-            type={show ? 'text' : 'password'}
-            className="py-2 rounded-lg pl-2 w-full"
-            placeholder="Password"
+            name="email"
+            value={inputs.email}
+            type="text"
+            className="py-2 rounded-lg pl-2"
+            placeholder="Email"
           />
-          <button className="absolute right-3" onClick={() => setShow(!show)}>
-            <BiHide />
+          <label className="my-2 text-lg">Password</label>
+          <div className="w-full relative flex items-center">
+            <input
+              onChange={handleChange}
+              value={inputs.password}
+              name="password"
+              type={show ? 'text' : 'password'}
+              className="py-2 rounded-lg pl-2 w-full"
+              placeholder="Password"
+            />
+            <button className="absolute right-3" onClick={() => setShow(!show)}>
+              <BiHide />
+            </button>
+          </div>
+          <button
+            className="bg-black py-2 rounded-lg text-white mt-6"
+            onClick={handleSubmit}
+          >
+            Submit
           </button>
+          {title === 'Login' ? (
+            <p className="text-xs mt-3">
+              New here?
+              <Link to="/signup">
+                {' '}
+                <u>Signup</u>
+              </Link>
+            </p>
+          ) : (
+            <p className="text-xs mt-3">
+              Already have an account?
+              <Link to="/login">
+                {' '}
+                <u>Login</u>
+              </Link>
+            </p>
+          )}
         </div>
-        <button
-          className="bg-black py-2 rounded-lg text-white mt-6"
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
-        {title === 'Login' ? (
-          <p className="text-xs mt-3">
-            New here?
-            <Link to="/signup">
-              {' '}
-              <u>Signup</u>
-            </Link>
-          </p>
-        ) : (
-          <p className="text-xs mt-3">
-            Already have an account?
-            <Link to="/login">
-              {' '}
-              <u>Login</u>
-            </Link>
-          </p>
-        )}
       </div>
     </div>
   );

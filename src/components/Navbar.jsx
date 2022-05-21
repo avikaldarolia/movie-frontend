@@ -3,7 +3,6 @@ import { FiLogOut } from 'react-icons/fi';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useFirebaseAuth } from '../context/FirebaseAuthContext';
-import util from '../assets/util.jpeg';
 const Navbar = () => {
   const navigate = useNavigate();
   const user = useFirebaseAuth();

@@ -17,13 +17,11 @@ const MovieCard = ({ name, poster, imdb, pid, indx, userUid, playlist }) => {
     await updateDoc(playRef, {
       movies: newMovies,
     });
-    // return;
-    // console.log(playRef, '$#');
-    // await updateDoc(playRef, {
-    //   movies:
-    // });
-    navigate(`/playlists/${pid}`);
-    // return;
+
+    // setTimeout(() => {
+    //   return navigate(`/playlists/${pid}`);
+    // }, 1000);
+    navigate('/playlists');
   };
   return (
     <div className="bg-gray-200 rounded-lg w-1/5 flex flex-col py-5 px-4 w-full cursor-pointer border border-[#f9790e]">
