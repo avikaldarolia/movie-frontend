@@ -10,38 +10,36 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
   const user = useFirebaseAuth();
   const [selected, setSelected] = useState();
   const [playlist, setPlaylist] = useState();
-  // const [submit, setSubmit] = useState(false);
-  // console.log(tabIndex);
-  // useEffect(() => {
-  //   const func = async () => {};
-  // }, [submit]);
-
   const handleSave = async (e) => {
     e.preventDefault();
     let selectedP = playlist?.find((p) => p.pid === selected);
-    console.log(selectedP, 'selected');
     let oldMovies = selectedP.movies;
-    console.log(movie.imdbID, 'Movie IMDB');
-    // let check = oldMovies?.find((mv) => mv.imdbId === movie.imdbId);
-    // function strcmp(a) {
-    //   let b = movie.imdbID;
-    //   b = b.toString();
-    //   a = a.toString();
-    //   for (
-    //     var i = 0, n = Math.max(a.length, b.length);
-    //     i < n && a.charAt(i) === b.charAt(i);
-    //     ++i
-    //   );
-    //   if (i === n) return 0;
-    //   return a.charAt(i) > b.charAt(i) ? -1 : 1;
-    // }
-    // let check = oldMovies?.find(strcmp);
-    // let check = oldMovies?.find((m) => toString(movie.imdbID).equals(m.imdbID));
-    // console.log(check, 'CHECK');
-    // if (check !== undefined) {
-    //   toast.error('Movie already present inside this playlist');
-    //   return;
-    // }
+    let check = false;
+    let b = movie.imdbID;
+    for (let i = 0; i < oldMovies?.length; i++) {
+      if (strcmp(oldMovies[i].imdbID, b)) {
+        check = true;
+        break;
+      }
+    }
+    function strcmp(a) {
+      b = b.toString();
+      a = a.toString();
+      const n = b.length;
+      if (a.length === 0 || b.length === 0 || a.length !== b.length) {
+        return false;
+      }
+      for (let i = 0; i < n; i++) {
+        if (a.charAt(i) !== b.charAt(i)) {
+          return false;
+        }
+      }
+      return true;
+    }
+    if (check) {
+      toast.error('Movie already present inside this playlist');
+      return;
+    }
     oldMovies.push(movie);
     const playRef = doc(db, 'playlists', selectedP?.pid);
     await updateDoc(playRef, {
@@ -76,7 +74,6 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
         <option value="Select a playlist">Select a playlist</option>
         {playlist &&
           playlist?.map((play, indx) => (
-            //   <div className="flex flex-col">{play.name}</div>
             <option key={indx} value={play?.pid}>
               {play?.name}
             </option>

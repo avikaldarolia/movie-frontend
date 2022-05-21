@@ -1,18 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
-// import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
-// import { db } from '../../firebase-config';
-const MovieCard = ({ name, poster, imdb, pid, indx, userUid }) => {
-  // const navigate = useNavigate();
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase-config';
+import { useNavigate } from 'react-router';
+
+const MovieCard = ({ name, poster, imdb, pid, indx, userUid, playlist }) => {
+  const navigate = useNavigate();
   const user = useFirebaseAuth();
   const handleDelete = async () => {
-    // const playRef = doc(db, 'playlists', 'movies');
+    let movies = playlist.movies;
+    console.log(movies);
+    let newMovies = movies.filter((mv) => mv.imdbID !== imdb);
+    console.log(newMovies);
+    const playRef = doc(db, 'playlists', pid);
+    await updateDoc(playRef, {
+      movies: newMovies,
+    });
+    // return;
     // console.log(playRef, '$#');
     // await updateDoc(playRef, {
     //   movies:
     // });
-    // navigate('/playlists');
+    navigate(`/playlists/${pid}`);
     // return;
   };
   return (

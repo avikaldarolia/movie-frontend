@@ -14,6 +14,7 @@ import Playlists from './components/Playlist/Playlists';
 import PlayDetail from './components/Playlist/PlayDetail';
 import MovieDetail from './components/Movie/MovieDetail';
 import PlayEdit from './components/Playlist/PlayEdit';
+import NotFound from './components/NotFound';
 
 function App() {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ function App() {
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/playlists/:id" element={<PlayDetail />} />
           <Route path="/playlists/edit/:id" element={<PlayEdit />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </FirebaseAuthProvider>

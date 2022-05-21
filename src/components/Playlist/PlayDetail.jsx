@@ -23,37 +23,42 @@ const PlayDetail = () => {
   const handleDelete = async (e) => {
     const playRef = doc(db, 'playlists', playlist?.pid);
     await deleteDoc(playRef);
+    window.location.reload(true);
     navigate('/playlists');
     return;
   };
   useEffect(() => {
     const getPlay = async () => {
       // const play = await getDoc(doc(db, 'playlists', params.id))
-      await getDoc(doc(db, 'playlists', params.id)).then((play) => {
-        if (play.exists()) {
-          let playlistData = play.data();
-
-          if (
-            playlistData?.uid !== user?.uid &&
-            playlistData.mode === 'private'
-          ) {
-            toast.error('This is a private playlist');
-            setTimeout(() => {
-              navigate('/playlists');
-            }, 2000);
-            return;
+      await getDoc(doc(db, 'playlists', params.id))
+        .then((play) => {
+          if (play.exists()) {
+            let playlistData = play.data();
+            if (
+              playlistData?.uid !== user?.uid &&
+              playlistData.mode === 'private'
+            ) {
+              toast.error('This is a private playlist');
+              setTimeout(() => {
+                navigate('/playlists');
+              }, 2000);
+              return;
+            }
+            setPlaylist(play.data());
+          } else {
+            console.log("Playlist doesn't exist");
+            toast.error("Playlist doesn't exist");
           }
-          setPlaylist(play.data());
-        } else {
-          console.log("Playlist doesn't exist");
+        })
+        .catch((err) => {
           toast.error("Playlist doesn't exist");
-        }
-      });
+          navigate('/playlists');
+        });
     };
     getPlay();
   }, [params.id]);
 
-  console.log(playlist, 'test');
+  // console.log(playlist, 'test');
 
   return (
     <div className="w-full">
@@ -109,6 +114,7 @@ const PlayDetail = () => {
               imdb={movie.imdbID}
               pid={params.id}
               userUid={playlist?.uid}
+              playlist={playlist}
             />
           ))}
         </div>
