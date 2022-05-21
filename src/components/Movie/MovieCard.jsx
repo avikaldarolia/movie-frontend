@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
 // import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 // import { db } from '../../firebase-config';
-const MovieCard = ({ name, poster, imdb, pid, indx }) => {
+const MovieCard = ({ name, poster, imdb, pid, indx, userUid }) => {
   // const navigate = useNavigate();
+  const user = useFirebaseAuth();
   const handleDelete = async () => {
     // const playRef = doc(db, 'playlists', 'movies');
     // console.log(playRef, '$#');
@@ -22,12 +24,14 @@ const MovieCard = ({ name, poster, imdb, pid, indx }) => {
           <p className="text-2xl mt-3">{name}</p>
         </div>
       </Link>
-      <button
-        onClick={handleDelete}
-        className="bg-red-500 text-white px-4 py-2 rounded-xl w-full mx-auto hover:text-black mt-3"
-      >
-        Delete
-      </button>
+      {user?.uid === userUid && (
+        <button
+          onClick={handleDelete}
+          className="bg-red-500 text-white px-4 py-2 rounded-xl w-full mx-auto hover:text-black mt-3"
+        >
+          Delete
+        </button>
+      )}
     </div>
   );
 };

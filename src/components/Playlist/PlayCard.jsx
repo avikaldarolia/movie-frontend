@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const PlayCard = ({ id, name, mode, pid }) => {
+const PlayCard = ({ name, mode, pid }) => {
 
   return (
     <Link to={`${pid}`}>

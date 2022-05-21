@@ -113,7 +113,6 @@ const Playlists = () => {
               <PlayCard
                 key={indx}
                 name={ply.name}
-                id={ply.id}
                 mode={ply.mode}
                 pid={ply.pid}
               />
