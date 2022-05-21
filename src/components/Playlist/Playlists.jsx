@@ -17,10 +17,8 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { ToastContainer, toast } from 'react-toastify';
-// import { doc, getDoc } from 'firebase/firestore';
 import 'react-toastify/dist/ReactToastify.css';
 import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
-// import { samplePlaylists } from '../../util/samplePlaylists';
 import PlayCard from './PlayCard';
 import {
   collection,
@@ -30,7 +28,6 @@ import {
   doc,
 } from 'firebase/firestore';
 import { db } from '../../firebase-config';
-
 const Playlists = () => {
   const user = useFirebaseAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,12 +35,8 @@ const Playlists = () => {
   const [name, setName] = useState('');
   const [playlist, setPlaylist] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [rel, setRel] = useState(false);
   useEffect(() => {
-    if (!user) {
-      <Spinner color="orange.500" />;
-      return;
-    }
     const func = async () => {
       await getDocs(collection(db, 'playlists'))
         .then((res) => {
@@ -56,8 +49,7 @@ const Playlists = () => {
         .catch((err) => console.log(err));
     };
     func();
-  }, []);
-  // console.log(playlist);
+  }, [rel]);
   const handleSave = async (e) => {
     e.preventDefault();
     if (name.length < 1) {
@@ -68,24 +60,19 @@ const Playlists = () => {
     if (val === '2') {
       mode = 'private';
     }
-    let elem = {
-      name: name,
-      mode: mode,
-    };
-    let play = [...playlist, elem];
-    setPlaylist(play);
+
     const docRef = await addDoc(collection(db, 'playlists'), {
       uid: user.uid,
       name: name,
       mode: mode,
       movies: [],
     });
-    console.log(docRef.id, 'docRef');
-    // adding pid
+    // adding pid (playlist Id)
     const playRef = doc(db, 'playlists', docRef.id);
     await updateDoc(playRef, {
       pid: docRef.id,
     });
+    setRel(!rel);
 
     onClose();
   };

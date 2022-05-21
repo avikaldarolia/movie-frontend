@@ -18,9 +18,6 @@ const MovieCard = ({ name, poster, imdb, pid, indx, userUid, playlist }) => {
       movies: newMovies,
     });
 
-    // setTimeout(() => {
-    //   return navigate(`/playlists/${pid}`);
-    // }, 1000);
     navigate('/playlists');
   };
   return (

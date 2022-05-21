@@ -2,12 +2,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router';
-// import { app } from './firebase-config';
 
-import {
-  FirebaseAuthProvider,
-  useFirebaseAuth,
-} from './context/FirebaseAuthContext';
+import { FirebaseAuthProvider } from './context/FirebaseAuthContext';
 import Homepage from './components/Homepage';
 import Auth from './components/Auth';
 import Playlists from './components/Playlist/Playlists';
@@ -24,13 +20,6 @@ function App() {
       navigate('/login');
     }
   }, []);
-  // const user = useFirebaseAuth();
-  // console.log(user);
-  // useEffect(() => {
-  //   if (!user) {
-  //     navigate('/');
-  //   }
-  // }, [user]);
   return (
     <FirebaseAuthProvider>
       <div className="">
