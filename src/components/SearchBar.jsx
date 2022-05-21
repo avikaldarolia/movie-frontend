@@ -10,7 +10,7 @@ const SearchBar = ({ q }) => {
   const handleQuery = (e) => {
     e.preventDefault();
     axios
-      .get(`http://www.omdbapi.com/?apikey=55d8034d&${q}=${query}`)
+      .get(`//www.omdbapi.com/?apikey=55d8034d&${q}=${query}`)
       .then((res) => {
         console.log(res.data);
         if (res.data.Response === 'False') {

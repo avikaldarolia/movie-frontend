@@ -18,7 +18,7 @@ const MovieDetail = () => {
   useEffect(() => {
     const getMovie = async () => {
       await axios
-        .get(`http://www.omdbapi.com/?apikey=55d8034d&i=${params.id}`)
+        .get(`//www.omdbapi.com/?apikey=55d8034d&i=${params.id}`)
         .then((res) => setMovie(res.data));
     };
     getMovie();

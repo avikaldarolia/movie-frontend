@@ -25,7 +25,6 @@ const PlayDetail = () => {
   const handleDelete = async (e) => {
     const playRef = doc(db, 'playlists', playlist?.pid);
     await deleteDoc(playRef);
-    // window.location.reload(true);
     navigate('/playlists');
     return;
   };
@@ -39,7 +38,7 @@ const PlayDetail = () => {
               playlistData?.uid !== user?.uid &&
               playlistData.mode === 'private'
             ) {
-              toast.error('This is a private playlist');
+              toast.error('This is a private playlist, Redirecting!');
               setTimeout(() => {
                 navigate('/playlists');
               }, 6000);
@@ -62,7 +61,7 @@ const PlayDetail = () => {
         });
     };
     getPlay();
-  }, [params.id, user]);
+  }, [params.id]);
 
   return (
     <div className="w-full">
