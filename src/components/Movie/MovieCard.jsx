@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
 // import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 // import { db } from '../../firebase-config';
@@ -16,7 +16,6 @@ const MovieCard = ({ name, poster, imdb, pid, indx, userUid }) => {
     // return;
   };
   return (
-    // send imdb id probably
     <div className="bg-gray-200 rounded-lg w-1/5 flex flex-col py-5 px-4 w-full cursor-pointer border border-[#f9790e]">
       <Link to={`/movie/${imdb}`}>
         <div className="">

@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 // import firebase from 'firebase/compat/app';
 import { onAuthStateChanged } from 'firebase/auth';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router';
 import { auth } from '../firebase-config';
 const FirebaseAuthContext = createContext();
 
@@ -31,12 +31,12 @@ const FirebaseAuthProvider = ({ children }) => {
 
 const useFirebaseAuth = () => {
   const context = useContext(FirebaseAuthContext);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (context === undefined) {
-      navigate('/login');
-    }
-  }, [context]);
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   if (context === undefined) {
+  //     navigate('/login');
+  //   }
+  // }, [context]);
   if (context === undefined) {
     // navigate('/login');
     return undefined;
