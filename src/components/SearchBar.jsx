@@ -1,22 +1,29 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SearchBar = ({ q }) => {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const handleQuery = (e) => {
     e.preventDefault();
-    if (q === 'id') {
-      navigate(`/movie/${query}`);
-      return;
-    }
     axios
       .get(`http://www.omdbapi.com/?apikey=55d8034d&${q}=${query}`)
-      .then((res) => navigate(`/movie/${res.data.imdbID}`));
+      .then((res) => {
+        // console.log(res);
+        console.log(res.data);
+        if (res.data.Response === 'False') {
+          toast.error('No results found');
+        } else {
+          navigate(`/movie/${res.data.imdbID}`);
+        }
+      });
   };
   return (
     <div className="flex justify-center mt-4">
+      <ToastContainer />
       <div className="mb-3 xl:w-96">
         <div className="input-group relative flex items-stretch w-full mb-4">
           <input
