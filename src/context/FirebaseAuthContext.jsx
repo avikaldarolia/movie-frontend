@@ -13,7 +13,7 @@ const FirebaseAuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
-      console.log('Auth', currentuser);
+      // console.log('Auth', currentuser);
       setUser(currentuser);
     });
 
@@ -31,12 +31,7 @@ const FirebaseAuthProvider = ({ children }) => {
 
 const useFirebaseAuth = () => {
   const context = useContext(FirebaseAuthContext);
-  // const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (context === undefined) {
-  //     navigate('/login');
-  //   }
-  // }, [context]);
+ 
   if (context === undefined) {
     // navigate('/login');
     return undefined;

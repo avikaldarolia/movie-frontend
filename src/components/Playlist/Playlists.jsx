@@ -37,7 +37,7 @@ const Playlists = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [rel, setRel] = useState(false);
   useEffect(() => {
-    console.log(user, 'user');
+    // console.log(user, 'user');
     const func = async () => {
       await getDocs(collection(db, 'playlists'))
         .then((res) => {

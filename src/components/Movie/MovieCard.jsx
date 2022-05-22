@@ -10,9 +10,9 @@ const MovieCard = ({ name, poster, imdb, pid, indx, userUid, playlist }) => {
   const user = useFirebaseAuth();
   const handleDelete = async () => {
     let movies = playlist.movies;
-    console.log(movies);
+    // console.log(movies);
     let newMovies = movies.filter((mv) => mv.imdbID !== imdb);
-    console.log(newMovies);
+    // console.log(newMovies);
     const playRef = doc(db, 'playlists', pid);
     await updateDoc(playRef, {
       movies: newMovies,

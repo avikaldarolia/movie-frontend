@@ -12,7 +12,7 @@ const SearchBar = ({ q }) => {
     axios
       .get(`//www.omdbapi.com/?apikey=55d8034d&${q}=${query}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.Response === 'False') {
           toast.error('No results found');
         } else {

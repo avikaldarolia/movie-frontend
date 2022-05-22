@@ -54,14 +54,16 @@ const PlayDetail = () => {
           }
         })
         .catch(() => {
-          toast.error("Playlist doesn't exist,\n Redirecting");
+          toast.error('Some Error Occured,\n Redirecting');
           setTimeout(() => {
             navigate('/playlists');
           }, 6000);
         });
     };
-    getPlay();
-  }, [params.id]);
+    if (user) {
+      getPlay();
+    }
+  }, [params.id, user]);
 
   return (
     <div className="w-full">
