@@ -31,8 +31,6 @@ const Auth = ({ title }) => {
 
         Cookies.set('jwt', JSON.stringify(response.data.data.jwt))
         Cookies.set('user', JSON.stringify(response.data.data.user))
-        console.log("JWT: ", Cookies.get('Jwt'));
-        console.log("User Cookie:", Cookies.get('User'));
         navigate('/')
       } catch (err) {
         console.log(err);
@@ -50,8 +48,6 @@ const Auth = ({ title }) => {
         console.log("RES", response.data);
         Cookies.set('jwt', JSON.stringify(response.data.data.jwt))
         Cookies.set('user', JSON.stringify(response.data.data.user))
-        console.log("JWT: ", Cookies.get('jwt'));
-        console.log("User Cookie:", Cookies.get('user'));
         navigate('/')
       } catch (err) {
         console.log(err);
