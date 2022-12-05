@@ -14,56 +14,59 @@ import { ToastContainer, toast } from 'react-toastify';
 import { MdEdit } from 'react-icons/md';
 import 'react-toastify/dist/ReactToastify.css';
 import { AiTwotoneDelete } from 'react-icons/ai';
-import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
+// import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
 import { Spinner } from '@chakra-ui/react';
+import Cookies from 'js-cookie';
 const PlayDetail = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [playlist, setPlaylist] = useState();
-  const user = useFirebaseAuth();
+  const user = Cookies.get('user');
+  // const user = useFirebaseAuth();
   const [isLoading, setIsLoading] = useState(true);
   const handleDelete = async (e) => {
-    const playRef = doc(db, 'playlists', playlist?.pid);
-    await deleteDoc(playRef);
+    // TODO: delete a playlist. Also add paranoid true in modals later on
+    // const playRef = doc(db, 'playlists', playlist?.pid);
+    // await deleteDoc(playRef);
     navigate('/playlists');
-    return;
   };
-  useEffect(() => {
-    const getPlay = async () => {
-      await getDoc(doc(db, 'playlists', params.id))
-        .then((play) => {
-          if (play.exists()) {
-            let playlistData = play.data();
-            if (
-              playlistData?.uid !== user?.uid &&
-              playlistData.mode === 'private'
-            ) {
-              toast.error('This is a private playlist, Redirecting!');
-              setTimeout(() => {
-                navigate('/playlists');
-              }, 6000);
-              return;
-            }
-            setPlaylist(play.data());
-            setIsLoading(false);
-          } else {
-            toast.error("Playlist doesn't exist,\n Redirecting");
-            setTimeout(() => {
-              navigate('/playlists');
-            }, 6000);
-          }
-        })
-        .catch(() => {
-          toast.error('Some Error Occured,\n Redirecting');
-          setTimeout(() => {
-            navigate('/playlists');
-          }, 6000);
-        });
-    };
-    if (user) {
-      getPlay();
-    }
-  }, [params.id, user]);
+  // TODO: fix this. If playlist exists then fetch by playlist id and userId
+  // useEffect(() => {
+  //   const getPlay = async () => {
+  //     await getDoc(doc(db, 'playlists', params.id))
+  //       .then((play) => {
+  //         if (play.exists()) {
+  //           let playlistData = play.data();
+  //           if (
+  //             playlistData?.uid !== user?.uid &&
+  //             playlistData.mode === 'private'
+  //           ) {
+  //             toast.error('This is a private playlist, Redirecting!');
+  //             setTimeout(() => {
+  //               navigate('/playlists');
+  //             }, 6000);
+  //             return;
+  //           }
+  //           setPlaylist(play.data());
+  //           setIsLoading(false);
+  //         } else {
+  //           toast.error("Playlist doesn't exist,\n Redirecting");
+  //           setTimeout(() => {
+  //             navigate('/playlists');
+  //           }, 6000);
+  //         }
+  //       })
+  //       .catch(() => {
+  //         toast.error('Some Error Occured,\n Redirecting');
+  //         setTimeout(() => {
+  //           navigate('/playlists');
+  //         }, 6000);
+  //       });
+  //   };
+  //   if (user) {
+  //     getPlay();
+  //   }
+  // }, [params.id, user]);
 
   return (
     <div className="w-full">

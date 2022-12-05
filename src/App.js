@@ -3,6 +3,8 @@
 import React, { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router';
 
+import Cookies from 'js-cookie';
+
 import { FirebaseAuthProvider } from './context/FirebaseAuthContext';
 import Homepage from './components/Homepage';
 import Auth from './components/Auth';
@@ -14,12 +16,12 @@ import NotFound from './components/NotFound';
 
 function App() {
   const navigate = useNavigate();
+  let jwt = Cookies.get('jwt')
   useEffect(() => {
-    let authToken = sessionStorage.getItem('Auth Token');
-    if (!authToken) {
+    if (!jwt) {
       navigate('/login');
     }
-  }, []);
+  }, [jwt]);
   return (
     <FirebaseAuthProvider>
       <div className="">

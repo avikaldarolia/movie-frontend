@@ -22,7 +22,7 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
         break;
       }
     }
-    function strcmp(a) {
+    function strcmp(a, b) {
       b = b.toString();
       a = a.toString();
       const n = b.length;

@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { setDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiHide } from 'react-icons/bi';
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from 'firebase/auth';
-import { db } from '../firebase-config';
 import wall from '../assets/wall.jpeg';
+import { URL } from "../config/config";
+import axios from 'axios';
+import Cookies from 'js-cookie'
 const Auth = ({ title }) => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({ email: '', password: '' });
   const [show, setShow] = useState(false);
-
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState,
@@ -25,50 +20,43 @@ const Auth = ({ title }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const authentication = getAuth();
     // signup
     if (title !== 'Login') {
-      await createUserWithEmailAndPassword(
-        authentication,
-        inputs.email,
-        inputs.password
-      )
-        .then(async (response) => {
-          sessionStorage.setItem(
-            'Auth Token',
-            response._tokenResponse.refreshToken
-          );
+      try {
+        let response = await axios.post(`${URL}/auth/signup`, inputs)
+        if (!response.data.success) {
+          toast.error(response.data.error)
+          return;
+        }
 
-          await setDoc(doc(db, 'users', response.user.uid), {
-            uid: response.user.uid,
-            email: inputs.email,
-          });
-
-          navigate('/');
-        })
-        .catch((err) => {
-          if (err.code === 'auth/email-already-in-use') {
-            toast.error('Email Already in Use');
-          }
-        });
+        Cookies.set('jwt', JSON.stringify(response.data.data.jwt))
+        Cookies.set('user', JSON.stringify(response.data.data.user))
+        console.log("JWT: ", Cookies.get('Jwt'));
+        console.log("User Cookie:", Cookies.get('User'));
+        navigate('/')
+      } catch (err) {
+        console.log(err);
+        toast.error('Invalid Credentials');
+      }
     }
     // login
     else {
-      signInWithEmailAndPassword(authentication, inputs.email, inputs.password)
-        .then((response) => {
-          sessionStorage.setItem(
-            'Auth Token',
-            response._tokenResponse.refreshToken
-          );
-          navigate('/');
-        })
-        .catch((err) => {
-          if (err.code === 'auth/user-not-found') {
-            toast.error('No user found with this email');
-          } else {
-            toast.error('Invalid Credentials');
-          }
-        });
+      try {
+        let response = await axios.post(`${URL}/auth/login`, inputs)
+        if (!response.data.success) {
+          toast.error(response.data.error)
+          return;
+        }
+        console.log("RES", response.data);
+        Cookies.set('jwt', JSON.stringify(response.data.data.jwt))
+        Cookies.set('user', JSON.stringify(response.data.data.user))
+        console.log("JWT: ", Cookies.get('jwt'));
+        console.log("User Cookie:", Cookies.get('user'));
+        navigate('/')
+      } catch (err) {
+        console.log(err);
+        toast.error('Invalid Credentials');
+      }
     }
   };
   return (

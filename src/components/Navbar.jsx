@@ -2,10 +2,11 @@ import React from 'react';
 import { FiLogOut } from 'react-icons/fi';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useFirebaseAuth } from '../context/FirebaseAuthContext';
+import Cookies from 'js-cookie';
 const Navbar = () => {
   const navigate = useNavigate();
-  const user = useFirebaseAuth();
+  // const user = useFirebaseAuth();
+  const user = Cookies.get('user');
   const handleLogout = () => {
     sessionStorage.removeItem('Auth Token');
     navigate('/login');
@@ -13,7 +14,6 @@ const Navbar = () => {
   return (
     <div className="flex bg-black items-center">
       <div className="flex items-center">
-        {/* <img className="h-16" src={util} alt="" /> */}
         <Link to="/">
           <p className="text-white py-5 ml-12 cursor-pointer">Bot-Movies</p>
         </Link>
