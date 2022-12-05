@@ -18,54 +18,33 @@ import {
 } from '@chakra-ui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
 import PlayCard from './PlayCard';
-// import {
-//   collection,
-//   getDocs,
-//   addDoc,
-//   updateDoc,
-//   doc,
-// } from 'firebase/firestore';
-// import { db } from '../../firebase-config';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { URL } from "../../config/config";
 const Playlists = () => {
-  // const user = useFirebaseAuth();
-  const user = Cookies.get('user');
+  const user = JSON.parse(Cookies.get('user'))
+
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [val, setVal] = useState(true);
+  const [val, setVal] = useState('1');
   const [name, setName] = useState('');
-  const [playlist, setPlaylist] = useState([]);
+  const [playlist, setPlaylist] = useState(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const [rel, setRel] = useState(false);
-  // TODO: fix this useEffect
+
   useEffect(() => {
     const getPlaylists = async () => {
-      let playlists = await axios.get(`${URL}/playlist/userId`, { params: { userId: user.id } })
+      try {
+        let playlists = await axios.get(`${URL}/playlist/userId`, { params: { userId: user.id } })
+        setPlaylist(playlists.data.data)
+
+      } catch (err) {
+        toast.error('Something went wrong')
+      }
       setIsLoading(false)
-      setPlaylist(playlists.data.data)
-      console.log("Playlists:", playlists);
     }
     getPlaylists()
-  }, [user])
-  // useEffect(() => {
-  //   // console.log(user, 'user');
-  // const getPlaylists = async () => {
-  //     //TODO: fetch playlists by userId
-  //     //   await getDocs(collection(db, 'playlists'))
-  //     //     .then((res) => {
-  //     //       let list = res.docs
-  //     //         .map((doc) => doc.data())
-  //     //         .filter((li) => li.uid === user?.uid);
-  //     //       setPlaylist(list);
-  //     //       setIsLoading(false);
-  //     //     })
-  //     //     .catch((err) => console.log(err));
-  // };
-  // getPlaylists();
-  //   }, [rel, user]);
+  }, [rel])
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -77,25 +56,19 @@ const Playlists = () => {
     let playlistData = {
       name,
       userId: parseInt(user.id),
-      isPrivate: val
+      isPrivate: val === '1' ? false : true
     }
 
-    const playlist = await axios.post(`${URL}/playlist`, playlistData);
-    console.log(playlist);
+    try {
+      const newPlaylist = await axios.post(`${URL}/playlist`, playlistData);
+      setPlaylist([...playlist, newPlaylist])
 
-    // setRel((rel) => !rel);  ????????
+    } catch (err) {
+      toast.error('Something went wrong')
+      return;
+    }
 
-    // const docRef = await addDoc(collection(db, 'playlists'), {
-    //   uid: user.uid,
-    //   name: name,
-    //   mode: mode,
-    //   movies: [],
-    // });
-    // // adding pid (playlist Id)
-    // const playRef = doc(db, 'playlists', docRef.id);
-    // await updateDoc(playRef, {
-    //   pid: docRef.id,
-    // });
+    setRel((rel) => !rel);
 
     onClose();
   };
@@ -132,7 +105,6 @@ const Playlists = () => {
               Create a Playlist
             </button>
           </div>
-
           {playlist?.length > 0 ? (
             <div className="grid md:grid-cols-4 gap-4 mx-32 mt-16">
               {playlist &&
@@ -140,8 +112,8 @@ const Playlists = () => {
                   <PlayCard
                     key={indx}
                     name={ply.name}
-                    mode={ply.mode}
-                    pid={ply.pid}
+                    mode={ply.isPrivate ? "Private" : "Public"}
+                    id={ply.id}
                   />
                 ))}
             </div>
@@ -168,7 +140,7 @@ const Playlists = () => {
                   value={val}
                   onChange={setVal}
                   className="mt-5 mx-auto"
-                  defaultValue="1"
+                  defaultValue={true}
                 >
                   <Stack spacing={5} direction="row">
                     <Radio size="lg" colorScheme="orange" value="1">

@@ -1,13 +1,12 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Radio, RadioGroup, Spinner, Stack } from '@chakra-ui/react';
-// import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-// import { db } from '../../firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../Navbar';
 import { IoMdArrowRoundBack } from 'react-icons/io';
+import axios from 'axios';
+import { URL } from '../../config/config';
 
 const PlayEdit = () => {
   const params = useParams();
@@ -16,20 +15,13 @@ const PlayEdit = () => {
   const [name, setName] = useState(playlist?.name);
   const [val, setVal] = useState('1');
   const [isLoading, setIsLoading] = useState(true);
-  // get Playlist by id
+
   useEffect(() => {
     const getPlay = async () => {
-      // const play = await getDoc(doc(db, 'playlists', params.id));
-      // if (play.exists()) {
-      //   setPlaylist(play.data());
-      //   setIsLoading(false);
-      // } else {
-      //   toast.error("Playlist doesn't exist, Redirecting");
-      //   setTimeout(() => {
-      //     setIsLoading(false);
-      //     navigate('/playlists');
-      //   }, [5000]);
-      // }
+      const play = await axios.get(`${URL}/playlist`, { params: { id: parseInt(params.id) } })
+      setPlaylist(play.data.data.rows[0])
+      setName(play.data.data.rows[0].name)
+      setIsLoading(false)
     };
     getPlay();
   }, [params.id]);
@@ -40,26 +32,26 @@ const PlayEdit = () => {
       toast.error('No name entered');
       return;
     }
-    let mode = 'public';
-    if (val === '2') {
-      mode = 'private';
+
+    try {
+      await axios.put(`${URL}/playlist/${playlist.id}`, { name, isPrivate: val !== '1' ? true : false })
+      toast.success('Playlist updated')
+      navigate(-1)
+    } catch (err) {
+      console.log(err);
+      toast.error('Something went wrong!')
+      return
     }
-    // TODO: patch playlist by playist id and then navigate to prev page
-    // const playRef = doc(db, 'playlists', params.id);
-    // await updateDoc(playRef, {
-    //   name: name,
-    //   mode: mode,
-    // }).then(() => navigate(-1));
   };
-  // TODO: useEffect fix
-  // useEffect(() => {
-  //   setName(playlist?.name);
-  //   if (playlist?.mode === 'private') {
-  //     setVal('2');
-  //   } else {
-  //     setVal('1');
-  //   }
-  // }, [playlist]);
+
+  useEffect(() => {
+    setName(playlist?.name);
+    if (playlist?.isPrivate) {
+      setVal('2');
+    } else {
+      setVal('1');
+    }
+  }, [playlist]);
   return (
     <div className="w-full">
       <ToastContainer />
@@ -108,6 +100,7 @@ const PlayEdit = () => {
                 size="lg"
                 colorScheme="orange"
                 value="1"
+                defaultChecked={playlist?.isPrivate ? false : true}
               >
                 Public
               </Radio>
@@ -116,6 +109,7 @@ const PlayEdit = () => {
                 size="lg"
                 colorScheme="orange"
                 value="2"
+                defaultChecked={playlist?.isPrivate ? true : false}
               >
                 Private
               </Radio>

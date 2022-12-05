@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const PlayCard = ({ name, mode, pid }) => {
+const PlayCard = ({ name, mode, id }) => {
   return (
-    <Link to={`${pid}`}>
+    <Link to={`${id}`}>
       <div className="bg-gray-200 rounded-lg flex flex-col py-5 px-4 w-full cursor-pointer">
         <div className="flex justify-between items-center">
           <p className="text-2xl">{name}</p>
