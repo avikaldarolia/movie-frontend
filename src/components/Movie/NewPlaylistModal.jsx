@@ -2,35 +2,63 @@ import { Radio, RadioGroup, Stack, Input } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase-config';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { URL } from '../../config/config';
 
 const NewPlaylistModal = ({ onClose, movie }) => {
-  const user = useFirebaseAuth();
+  const user = JSON.parse(Cookies.get('user'));
   const [val, setVal] = useState('1');
   const [name, setName] = useState('');
 
+  // TODO: 1. check if the name of this playlist is valid or not.  (done)
+  // 2. Create a new Playlist. (done)
+  // 3. If movie is not present in Db? then Create else Fetch.
+  // 4. Create the mapping of playlist and movie
   const handleSave = async (e) => {
     e.preventDefault();
     if (name.length < 1) {
-      toast.error('No name entered');
+      toast.error('Please provide a name');
       return;
     }
-    let mode = 'public';
-    if (val === '2') {
-      mode = 'private';
+    let playlistData = {
+      name,
+      userId: parseInt(user.id),
+      isPrivate: val === '1' ? false : true
     }
-    const docRef = await addDoc(collection(db, 'playlists'), {
-      uid: user.uid,
-      name: name,
-      mode: mode,
-      movies: [movie],
-    });
-    const playRef = doc(db, 'playlists', docRef.id);
-    await updateDoc(playRef, {
-      pid: docRef.id,
-    });
+
+    try {
+      let newPlaylist = await axios.post(`${URL}/playlist`, playlistData);
+      console.log('np;', newPlaylist);
+      if (!newPlaylist.data.data) {
+        toast.error(newPlaylist.data.error)
+        return;
+      }
+      console.log(newPlaylist.data.data); // gives data
+      // movie code
+      let fetchedMovie = await axios.post(`${URL}/movie/fetch`, movie)
+      // movie mapping
+      let playlistMovieMapping = await axios.post(`${URL}/playlist_movie/fetch`, {
+        playlistId: parseInt(newPlaylist.data.data.id),
+        movieId: parseInt(fetchedMovie.data.data[0].id),
+      })
+      console.log(playlistMovieMapping.data.data);
+      toast.success('Movie added to the new playlist!')
+    } catch (err) {
+      console.log(err);
+      toast.error('Something went wrong');
+    }
+
+    // const docRef = await addDoc(collection(db, 'playlists'), {
+    //   uid: user.uid,
+    //   name: name,
+    //   mode: mode,
+    //   movies: [movie],
+    // });
+    // const playRef = doc(db, 'playlists', docRef.id);
+    // await updateDoc(playRef, {
+    //   pid: docRef.id,
+    // });
     onClose();
   };
   return (

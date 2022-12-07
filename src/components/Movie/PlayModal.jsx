@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react';
 import NewPlaylistModal from './NewPlaylistModal';
 import ExistingPlaylist from './ExistingPlaylist';
-
 const PlayModal = ({ isOpen, onClose, movie }) => {
   const [tabIndex, setTabIndex] = useState(0);
   return (

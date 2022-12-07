@@ -61,6 +61,10 @@ const Playlists = () => {
 
     try {
       const newPlaylist = await axios.post(`${URL}/playlist`, playlistData);
+      if (!newPlaylist.data.data) {
+        toast.error(newPlaylist.data.error)
+        return;
+      }
       setPlaylist([...playlist, newPlaylist])
 
     } catch (err) {

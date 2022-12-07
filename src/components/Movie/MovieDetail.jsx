@@ -11,7 +11,6 @@ import PlayModal from './PlayModal';
 const MovieDetail = () => {
   const params = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // console.log(params.id);
   const [movie, setMovie] = useState();
   const navigate = useNavigate();
 

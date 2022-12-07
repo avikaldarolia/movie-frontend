@@ -31,6 +31,7 @@ const PlayDetail = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const [playlist, setPlaylist] = useState();
+  // const [movies, setMovies] = useState();
   const user = JSON.parse(Cookies.get('user'));
   const [isLoading, setIsLoading] = useState(true);
   const [deleteText, setDeleteText] = useState('')
@@ -51,14 +52,19 @@ const PlayDetail = () => {
   };
 
   useEffect(() => {
-    const getPlaylist = async () => {
-      let response = await axios.get(`${URL}/playlist`, { params: { id: parseInt(params.id) } })
-      setPlaylist(response.data.data.rows[0])
-      console.log("RES", response.data.data);
+    const getPlaylistWithMovies = async () => {
+      try {
+        let response = await axios.get(`${URL}/playlist`, { params: { id: parseInt(params.id) } })
+        setPlaylist(response.data.data.rows[0])
+        console.log("RES", response.data.data);
+        // TODO: display all the movies in that playlist
+      } catch (err) {
+        toast.error('Something Went Wrong!')
+      }
       setIsLoading(false)
     }
     if (user) {
-      getPlaylist()
+      getPlaylistWithMovies()
     }
   }, [params.id])
 
