@@ -5,29 +5,29 @@ import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 const Navbar = () => {
   const navigate = useNavigate();
-  const user = Cookies.get('user');
   const handleLogout = () => {
     Cookies.remove('user')
     Cookies.remove('jwt')
     navigate('/login');
   };
   return (
-    <div className="flex bg-black items-center">
+    <div className="flex md:justify-between bg-black items-center py-3 md:py-5 px-2 md:px-12">
       <div className="flex items-center">
         <Link to="/">
-          <p className="text-white py-5 ml-12 cursor-pointer">Bot-Movies</p>
+          <p className="text-white cursor-pointer">Bot-Movies</p>
         </Link>
       </div>
-      {user && (
-        <p className="text-white py-5 mx-auto cursor-pointer hover:text-[#f9790e]">
-          <Link to="/playlists">My Playlists</Link>
-        </p>
-      )}
 
-      <FiLogOut
-        onClick={handleLogout}
-        className="h-6 w-6 text-white ml-auto mr-12 cursor-pointer"
-      />
+      <div className="text-white mx-auto cursor-pointer hover:text-[#f9790e]">
+        <Link to="/playlists">My Playlists</Link>
+      </div>
+
+      <div className="">
+        <FiLogOut
+          onClick={handleLogout}
+          className="h-6 w-6 text-white ml-auto cursor-pointer"
+        />
+      </div>
     </div>
   );
 };
