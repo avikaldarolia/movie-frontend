@@ -23,6 +23,8 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import { URL } from "../../config/config";
 const Playlists = () => {
+  const jwt = Cookies.get('jwt')
+  console.log(jwt);
   const user = JSON.parse(Cookies.get('user'))
 
   const { isOpen, onOpen, onClose } = useDisclosure();

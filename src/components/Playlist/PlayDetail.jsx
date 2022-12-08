@@ -32,7 +32,6 @@ const PlayDetail = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const [playlist, setPlaylist] = useState();
-  // const [movies, setMovies] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [deleteText, setDeleteText] = useState('')
   const [reloadFlag, setReloadFlag] = useState(false)

@@ -8,7 +8,8 @@ const Navbar = () => {
   // const user = useFirebaseAuth();
   const user = Cookies.get('user');
   const handleLogout = () => {
-    sessionStorage.removeItem('Auth Token');
+    Cookies.remove('user')
+    Cookies.remove('jwt')
     navigate('/login');
   };
   return (
