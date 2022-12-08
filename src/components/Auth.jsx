@@ -64,17 +64,17 @@ const Auth = ({ title }) => {
     }
   };
   return (
-    <div className="w-screen h-screen flex flex-col bg-black">
-      <p className="text-white mx-auto mt-16 text-5xl">Bot-Movies</p>
-      <div className="flex w-full mt-16 h-fit">
-        <div className="w-1/2 ml-64 bg-gray-200 rounded-tl-xl rounded-bl-xl">
+    <div className="w-full h-screen flex flex-col bg-black">
+      <p className="text-white mx-auto mt-12 md:mt-16 text-2xl md:text-5xl font-bold">Bot-Movies</p>
+      <div className="flex flex-col md:flex-row w-11/12 mx-auto md:mx-none md:w-full mt-8 md:mt-16">
+        <div className="w-1/2 ml-64 bg-gray-200 rounded-tl-xl rounded-bl-xl hidden md:block">
           <img
             src={wall}
             className="h-full w-fit rounded-tl-xl rounded-bl-xl"
             alt=""
           />
         </div>
-        <div className="flex flex-col mx-auto w-1/2 p-10 rounded-tr-xl rounded-br-xl bg-[#f9790e] mr-64">
+        <div className="flex flex-col mx-auto w-11/12 md:w-1/2 p-10 rounded-tl-xl md:rounded-tl-none rounded-tr-xl rounded-bl-xl md:rounded-bl-xl-none rounded-br-xl bg-[#f9790e] md:mr-64">
           <ToastContainer />
           <p className="font-bold text-3xl py-2">{title}</p>
           <label className="my-2 text-lg">Email</label>
