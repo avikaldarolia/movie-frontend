@@ -47,7 +47,7 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
   useEffect(() => {
     const getPlaylists = async () => {
       try {
-        let playlists = await axios.get(`${URL}/playlist/userId`, { params: { userId: parseInt(user.id) } })
+        let playlists = await axios.get(`${URL}/playlist/userId/${user.id}`)
         setPlaylist(playlists.data.data)
 
       } catch (err) {

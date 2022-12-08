@@ -27,14 +27,16 @@ import axios from 'axios';
 import { URL } from '../../config/config'
 
 const PlayDetail = () => {
+  const user = JSON.parse(Cookies.get('user'));
   const params = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const [playlist, setPlaylist] = useState();
   // const [movies, setMovies] = useState();
-  const user = JSON.parse(Cookies.get('user'));
   const [isLoading, setIsLoading] = useState(true);
   const [deleteText, setDeleteText] = useState('')
+  const [reloadFlag, setReloadFlag] = useState(false)
+
   // TODO: Also add paranoid true in modals later on
   const handleDelete = async (e) => {
     if (deleteText !== `${user.email}/${playlist.name}`) {
@@ -54,10 +56,9 @@ const PlayDetail = () => {
   useEffect(() => {
     const getPlaylistWithMovies = async () => {
       try {
-        let response = await axios.get(`${URL}/playlist`, { params: { id: parseInt(params.id) } })
-        setPlaylist(response.data.data.rows[0])
-        console.log("RES", response.data.data);
-        // TODO: display all the movies in that playlist
+        let response = await axios.get(`${URL}/playlist/${params.id}`)
+        setPlaylist(response.data.data)
+        console.log("RES", response.data.data); //gives data + Movies
       } catch (err) {
         toast.error('Something Went Wrong!')
       }
@@ -66,7 +67,7 @@ const PlayDetail = () => {
     if (user) {
       getPlaylistWithMovies()
     }
-  }, [params.id])
+  }, [params.id, reloadFlag])
 
   return (
     <div className="w-full">
@@ -123,7 +124,6 @@ const PlayDetail = () => {
                 </div>
               </div>
             </div>
-            {/* code for movies will come here */}
             {playlist === undefined || playlist?.length < 1 ? (
               <p className="ml-32 mt-16 text-3xl">
                 Seems a bit empty here... <br /> Add some movies to see
@@ -131,15 +131,15 @@ const PlayDetail = () => {
               </p>
             ) : (
               <div className="grid md:grid-cols-4 gap-6 mx-32 mt-8">
-                {playlist?.movies?.map((movie, indx) => (
+                {playlist?.Movies?.map((movie, indx) => (
                   <MovieCard
                     key={indx}
-                    name={movie.Title}
-                    poster={movie.Poster}
+                    name={movie.title}
+                    poster={movie.poster}
                     imdb={movie.imdbID}
-                    pid={params.id}
-                    userUid={playlist?.uid}
-                    playlist={playlist}
+                    mapping={movie.Playlist_Movie}
+                    setReloadFlag={setReloadFlag}
+                    reloadFlag={reloadFlag}
                   />
                 ))}
               </div>

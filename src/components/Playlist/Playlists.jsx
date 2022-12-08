@@ -30,12 +30,11 @@ const Playlists = () => {
   const [name, setName] = useState('');
   const [playlist, setPlaylist] = useState(undefined);
   const [isLoading, setIsLoading] = useState(true);
-  const [rel, setRel] = useState(false);
 
   useEffect(() => {
     const getPlaylists = async () => {
       try {
-        let playlists = await axios.get(`${URL}/playlist/userId`, { params: { userId: user.id } })
+        let playlists = await axios.get(`${URL}/playlist/userId/${user.id}`)
         setPlaylist(playlists.data.data)
 
       } catch (err) {
@@ -44,7 +43,7 @@ const Playlists = () => {
       setIsLoading(false)
     }
     getPlaylists()
-  }, [rel])
+  }, [])
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -65,14 +64,12 @@ const Playlists = () => {
         toast.error(newPlaylist.data.error)
         return;
       }
-      setPlaylist([...playlist, newPlaylist])
+      setPlaylist([...playlist, newPlaylist.data.data])
 
     } catch (err) {
       toast.error('Something went wrong')
       return;
     }
-
-    setRel((rel) => !rel);
 
     onClose();
   };
