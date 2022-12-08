@@ -63,9 +63,8 @@ const PlayDetail = () => {
       }
       setIsLoading(false)
     }
-    if (user) {
-      getPlaylistWithMovies()
-    }
+    getPlaylistWithMovies()
+
   }, [params.id, reloadFlag])
 
   return (
@@ -88,43 +87,43 @@ const PlayDetail = () => {
       ) : (
         <>
           <div className="w-full flex flex-col">
-            <div className="flex items-center ml-12 mt-8">
-              <Link to="/playlists">
-                <IoMdArrowRoundBack
-                  className="w-10 h-10 hover:fill-black cursor-pointer"
-                  style={{ color: '#f9790e' }}
-                />
-              </Link>
-              <div className="flex items-center rounded-xl py-5 bg-gray-200 ml-4 w-fit px-10 ">
-                <p className="text-5xl ">Movies in: {playlist?.name}</p>
-                <div className="ml-5 mt-1.5 flex items-center bg-white rounded-xl py-1 px-2">
+            <div className="w-full flex flex-col bg-gray-200 md:flex-row items-center py-2 md:py-5 w-full">
+              <div className="flex justify-between items-center w-11/12 md:w-4/5 md:mx-10">
+                <Link to="/playlists">
+                  <IoMdArrowRoundBack
+                    className="w-6 h-6 md:w-10 md:h-10 hover:fill-black cursor-pointer ml-4"
+                    style={{ color: '#f9790e' }}
+                  />
+                </Link>
+                <p className="text-2xl md:text-5xl ">{playlist?.name}</p>
+                <div className="flex items-center bg-black text-white rounded-lg md:rounded-xl py-1 px-2 md:px-3">
                   {playlist?.isPrivate === true ? (
-                    <ImLock className="" style={{ color: '#f9790e' }} />
+                    <ImLock className="w-3 h-3" style={{ color: '#f9790e' }} />
                   ) : (
-                    <ImUnlocked className="mr-1" style={{ color: '#f9790e' }} />
+                    <ImUnlocked className="w-3 h-3 mr-1" style={{ color: '#f9790e' }} />
                   )}
-                  <p>{playlist?.isPrivate ? "Private" : "Public"}</p>
-                </div>
-
-                <div className="flex items-center ml-32 bg-white rounded-xl py-2 px-3">
-                  <button
-                    onClick={() => navigate(`/playlists/edit/${params.id}`)}
-                    className="flex items-center px-3 bg-[#f9790e] py-2 rounded-xl hover:bg-orange-600"
-                  >
-                    <MdEdit style={{ color: 'black' }} />
-                    <p className="pl-1">Edit</p>
-                  </button>
-                  <button className="ml-4 flex items-center px-3 bg-[#f9790e] py-2 rounded-xl hover:bg-orange-600">
-                    <AiTwotoneDelete style={{ color: 'black' }} />
-                    <p className="pl-1" onClick={onOpen}>
-                      Delete
-                    </p>
-                  </button>
+                  <p className='text-xs md:text-xl'>{playlist?.isPrivate ? "Private" : "Public"}</p>
                 </div>
               </div>
+
+              <div className="flex w-3/5 mx-4 md:w-2/5 justify-around items-center py-2 px-3">
+                <button
+                  onClick={() => navigate(`/playlists/edit/${params.id}`)}
+                  className="flex sm:text-sm items-center py-1 px-2 md:px-3 bg-black text-white rounded-lg md:rounded-xl"
+                >
+                  <MdEdit className='w-3 h-3' style={{ color: '#f9790e' }} />
+                  <p className="text-xs md:text-xl pl-1">Edit</p>
+                </button>
+                <button className="flex sm:text-sm items-center py-1 px-2 md:px-3 bg-black text-white rounded-lg md:rounded-xl hover:text-red-500">
+                  <AiTwotoneDelete className='w-3 h-3' style={{ color: '#f9790e' }} />
+                  <p className="text-xs md:text-xl pl-1" onClick={onOpen}>
+                    Delete
+                  </p>
+                </button>
+              </div>
             </div>
-            {playlist === undefined || playlist?.length < 1 ? (
-              <p className="ml-32 mt-16 text-3xl">
+            {playlist.Movies === undefined || playlist?.Movies.length < 1 ? (
+              <p className="mx-auto md:ml-32 mt-6 md:mt-12 mx-6 md:text-3xl">
                 Seems a bit empty here... <br /> Add some movies to see
                 the changes.
               </p>

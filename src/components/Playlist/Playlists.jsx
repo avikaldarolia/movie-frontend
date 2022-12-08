@@ -95,21 +95,23 @@ const Playlists = () => {
         </div>
       ) : (
         <>
-          <div className="flex justify-between items-center mt-6">
-            <p className="ml-16 text-5xl ">
-              Your Playlists{' '}
-              <span className="font-light text-xl">(Click for details)</span>{' '}
-            </p>
+          <div className="flex justify-between items-center mt-6 mx-10">
+            <div className="flex flex-col">
+              <p className="md:ml-16 text-2xl md:text-5xl">
+                Your Playlists...
+              </p>
+              <p className="font-light text-sm md:text-xl md:ml-16">(Click for details)</p>
+            </div>
             <button
               style={{ backgroundColor: '#f9790e' }}
               onClick={onOpen}
-              className="flex items-center h-fit py-3 px-4 rounded-xl mr-24 hover:text-white"
+              className="flex items-center py-1 px-2 md:py-3 md:px-4 rounded-lg md:rounded-xl md:mr-24 hover:text-white"
             >
               Create a Playlist
             </button>
           </div>
           {playlist?.length > 0 ? (
-            <div className="grid md:grid-cols-4 gap-4 mx-32 mt-16">
+            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mx-10 md:mx-32 mt-10 md:mt-16">
               {playlist &&
                 playlist.map((ply, indx) => (
                   <PlayCard

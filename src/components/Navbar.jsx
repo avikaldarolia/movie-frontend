@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 const Navbar = () => {
   const navigate = useNavigate();
-  // const user = useFirebaseAuth();
   const user = Cookies.get('user');
   const handleLogout = () => {
     Cookies.remove('user')
@@ -20,7 +19,7 @@ const Navbar = () => {
         </Link>
       </div>
       {user && (
-        <p className="text-[#f9790e] py-5 mx-auto cursor-pointer hover:text-white">
+        <p className="text-white py-5 mx-auto cursor-pointer hover:text-[#f9790e]">
           <Link to="/playlists">My Playlists</Link>
         </p>
       )}
