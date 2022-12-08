@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiHide } from 'react-icons/bi';
@@ -9,6 +9,8 @@ import { URL } from "../config/config";
 import axios from 'axios';
 import Cookies from 'js-cookie'
 const Auth = ({ title }) => {
+  let jwt = Cookies.get('jwt')
+  console.log();
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({ email: '', password: '' });
   const [show, setShow] = useState(false);
@@ -18,6 +20,12 @@ const Auth = ({ title }) => {
       [e.target.name]: e.target.value,
     }));
   };
+  useEffect(() => {
+    if (jwt) {
+      <Navigate to='/' />
+    }
+  }, [jwt])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // signup

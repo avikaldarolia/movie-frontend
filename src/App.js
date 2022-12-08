@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router';
+import { Navigate, Route, Routes, useNavigate } from 'react-router';
 
 import Cookies from 'js-cookie';
 import Homepage from './components/Homepage';
@@ -30,6 +30,8 @@ function App() {
         <Route path="/playlists" element={<Playlists />} />
         <Route path="/playlists/:id" element={<PlayDetail />} />
         <Route path="/playlists/edit/:id" element={<PlayEdit />} />
+        {/* <Route path="signup" action={() => <Navigate to='/'} element={<Homepage />} />
+        <Route path="login" element={<Homepage />} /> */}
         <Route path="*" element={<NotFound />} />
       </Route>
       <Route path="signup" element={<Auth title={'Signup'} />} />
