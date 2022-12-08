@@ -111,7 +111,7 @@ const Playlists = () => {
             </button>
           </div>
           {playlist?.length > 0 ? (
-            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mx-10 md:mx-32 mt-10 md:mt-16">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mx-10 md:mx-12 mt-10 md:mt-16">
               {playlist &&
                 playlist.map((ply, indx) => (
                   <PlayCard

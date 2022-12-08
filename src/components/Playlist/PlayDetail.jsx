@@ -95,7 +95,7 @@ const PlayDetail = () => {
                     style={{ color: '#f9790e' }}
                   />
                 </Link>
-                <p className="text-2xl md:text-5xl ">{playlist?.name}</p>
+                <p className="text-2xl md:text-5xl">{playlist?.name}</p>
                 <div className="flex items-center bg-black text-white rounded-lg md:rounded-xl py-1 px-2 md:px-3">
                   {playlist?.isPrivate === true ? (
                     <ImLock className="w-3 h-3" style={{ color: '#f9790e' }} />
