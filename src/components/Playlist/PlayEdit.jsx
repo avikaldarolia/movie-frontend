@@ -70,27 +70,27 @@ const PlayEdit = () => {
           />
         </div>
       ) : (
-        <div className="bg-gray-200 mx-auto py-10 mt-16 w-2/5 rounded-2xl flex flex-col">
-          <div className="flex items-center ml-6">
+        <div className="bg-black mx-auto py-4 md:py-10 mt-8 md:mt-16 w-4/5 md:w-2/5 rounded-xl md:rounded-2xl flex flex-col outline outline-[#f9790e]">
+          <div className="flex items-center ml-3 md:ml-6">
             <IoMdArrowRoundBack
-              className="w-10 h-10 hover:fill-black cursor-pointer absolute"
+              className="w-6 h-6 md:w-10 md:h-10 hover:fill-black cursor-pointer absolute"
               style={{ color: '#f9790e' }}
               onClick={() => navigate(-1)}
             />
-            <p className="text-4xl mx-auto">Edit Playlist</p>
+            <p className="text-xl text-white md:text-4xl mx-auto">Edit Playlist</p>
           </div>
-          <label className="ml-16 mt-2 text-xl">Name</label>
+          <label className="mt-2 w-4/5 mx-auto md:text-xl text-white px-3">Name</label>
           <input
             type="text"
             value={name}
-            className="outline outline-[#f9790e] ml-16 w-4/5 py-2 px-3 rounded-lg mt-1"
+            className="outline outline-[#f9790e] mx-auto w-4/5 py-1 md:py-2 px-3 rounded-lg mt-1"
             onChange={(e) => setName(e.target.value)}
           />
-          <label className="ml-16 mt-2  text-xl">Mode</label>
+          <label className="mt-5 w-4/5 mx-auto md:text-xl text-white px-3">Mode</label>
           <RadioGroup
             value={val}
             onChange={setVal}
-            className="mt-5 ml-16 rounded-lg py-2 w-fit px-4"
+            className="mt-1 mx-auto rounded-lg py-1 md:py-2 w-4/5 px-4 outline outline-[#f9790e]"
             defaultValue="1"
             background={'white'}
           >
@@ -116,7 +116,7 @@ const PlayEdit = () => {
             </Stack>
           </RadioGroup>
           <button
-            className="mt-5 mx-auto w-fit text-xl text-white bg-black cursor-pointer px-4 py-2 rounded-xl"
+            className="mt-5 mx-auto bg-gray-500 w-4/5 md:w-fit md:text-xl text-white cursor-pointer px-4 py-2 rounded-xl"
             onClick={handleSave}
           >
             Save
