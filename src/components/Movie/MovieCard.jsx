@@ -22,12 +22,12 @@ const MovieCard = ({ name, poster, imdb, mapping, setReloadFlag, reloadFlag }) =
     onClose()
   };
   return (
-    <div className="bg-gray-200 rounded-lg flex flex-col py-5 px-4 w-full cursor-pointer border border-[#f9790e]">
+    <div className="bg-black rounded-lg flex flex-col py-3 px-2 md:py-5 md:px-4 w-full cursor-pointer border border-[#f9790e]">
       <ToastContainer />
       <Link to={`/movie/${imdb}`}>
         <div className="">
-          <img src={poster} className="h-80 mx-auto" alt="" />
-          <p className="text-2xl mt-3">{name}</p>
+          <img src={poster} className="h-56 sm:h-64 md:h-80 w-11/12 mx-auto" alt="" />
+          <p className="text-lg mx-auto w-11/12 text-white md:text-2xl mt-3">{name}</p>
         </div>
       </Link>
       <button

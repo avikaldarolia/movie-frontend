@@ -128,7 +128,7 @@ const PlayDetail = () => {
                 the changes.
               </p>
             ) : (
-              <div className="grid md:grid-cols-4 gap-6 mx-32 mt-8">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-10 md:mx-28 mt-4 md:mt-8">
                 {playlist?.Movies?.map((movie, indx) => (
                   <MovieCard
                     key={indx}
