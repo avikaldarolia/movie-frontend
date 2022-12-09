@@ -20,8 +20,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PlayCard from './PlayCard';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import { URL } from "../../config/config";
+import makeAxiosRequest from '../../utils/utils';
 const Playlists = () => {
   const jwt = Cookies.get('jwt')
   console.log(jwt);
@@ -36,7 +36,7 @@ const Playlists = () => {
   useEffect(() => {
     const getPlaylists = async () => {
       try {
-        let playlists = await axios.get(`${URL}/playlist/userId/${user.id}`)
+        let playlists = await makeAxiosRequest(`${URL}/playlist/userId/${user.id}`, "GET")
         setPlaylist(playlists.data.data)
 
       } catch (err) {
@@ -61,7 +61,7 @@ const Playlists = () => {
     }
 
     try {
-      const newPlaylist = await axios.post(`${URL}/playlist`, playlistData);
+      const newPlaylist = await makeAxiosRequest(`${URL}/playlist`, "POST", {}, playlistData)
       if (!newPlaylist.data.data) {
         toast.error(newPlaylist.data.error)
         return;
@@ -111,7 +111,7 @@ const Playlists = () => {
             </button>
           </div>
           {playlist?.length > 0 ? (
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mx-10 md:mx-12 mt-10 md:mt-16">
+            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mx-10 md:mx-12 mt-10 md:mt-16">
               {playlist &&
                 playlist.map((ply, indx) => (
                   <PlayCard

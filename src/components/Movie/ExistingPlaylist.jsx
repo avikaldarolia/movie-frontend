@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from 'axios';
 import { URL } from '../../config/config'
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import makeAxiosRequest from '../../utils/utils';
 
 const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
   const user = JSON.parse(Cookies.get('user'));
@@ -19,10 +19,9 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
     // movie code beyond this
     console.log("movie:", movie);
     try {
-      let fetchedMovie = await axios.post(`${URL}/movie/fetch`, movie)
+      let fetchedMovie = await makeAxiosRequest(`${URL}/movie/fetch`, "POST", {}, movie)
       console.log("Fetched Movie", fetchedMovie.data); // fetchedMovie.data.data[0] when new
-      // find or create Mapping. if (exists then throw error that movie is already present)
-      let playlistMovieMapping = await axios.post(`${URL}/playlist_movie/fetch`, {
+      let playlistMovieMapping = await makeAxiosRequest(`${URL}/playlist_movie/fetch`, "POST", {}, {
         playlistId: parseInt(selected.id),
         movieId: parseInt(fetchedMovie.data.data[0].id),
       })
@@ -31,7 +30,6 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
       // mapping existed => movie is already present in this playlist
       if (!playlistMovieMapping.data.data[1]) {
         console.log("here");
-        // toast.error('test')
         toast.error("Already present in the playlist")
       }
       else {
@@ -47,7 +45,7 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
   useEffect(() => {
     const getPlaylists = async () => {
       try {
-        let playlists = await axios.get(`${URL}/playlist/userId/${user.id}`)
+        let playlists = await makeAxiosRequest(`${URL}/playlist/userId/${user.id}`, "GET")
         setPlaylist(playlists.data.data)
 
       } catch (err) {

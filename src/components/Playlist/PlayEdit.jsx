@@ -5,8 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../Navbar';
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import axios from 'axios';
 import { URL } from '../../config/config';
+import makeAxiosRequest from '../../utils/utils';
 
 const PlayEdit = () => {
   const params = useParams();
@@ -18,7 +18,7 @@ const PlayEdit = () => {
 
   useEffect(() => {
     const getPlay = async () => {
-      const play = await axios.get(`${URL}/playlist`, { params: { id: parseInt(params.id) } })
+      const play = await makeAxiosRequest(`${URL}/playlist`, "GET", { params: { id: parseInt(params.id) } })
       setPlaylist(play.data.data.rows[0])
       setName(play.data.data.rows[0].name)
       setIsLoading(false)
@@ -32,9 +32,13 @@ const PlayEdit = () => {
       toast.error('No name entered');
       return;
     }
-
     try {
-      await axios.put(`${URL}/playlist/${playlist.id}`, { name, isPrivate: val !== '1' ? true : false })
+      let validNameCheck = await makeAxiosRequest(`${URL}/playlist/checkValidName`, "POST", {}, { name })
+      if (!validNameCheck.data.data) {
+        toast.error(validNameCheck.data.error)
+      }
+
+      await makeAxiosRequest(`${URL}/playlist/${playlist.id}`, "PUT", {}, { name, isPrivate: val !== '1' ? true : false })
       toast.success('Playlist updated')
       navigate(-1)
     } catch (err) {

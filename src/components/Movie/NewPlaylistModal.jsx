@@ -2,19 +2,15 @@ import { Radio, RadioGroup, Stack, Input } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import { URL } from '../../config/config';
+import makeAxiosRequest from '../../utils/utils';
 
 const NewPlaylistModal = ({ onClose, movie }) => {
   const user = JSON.parse(Cookies.get('user'));
   const [val, setVal] = useState('1');
   const [name, setName] = useState('');
 
-  // TODO: 1. check if the name of this playlist is valid or not.  (done)
-  // 2. Create a new Playlist. (done)
-  // 3. If movie is not present in Db? then Create else Fetch.
-  // 4. Create the mapping of playlist and movie
   const handleSave = async (e) => {
     e.preventDefault();
     if (name.length < 1) {
@@ -28,7 +24,7 @@ const NewPlaylistModal = ({ onClose, movie }) => {
     }
 
     try {
-      let newPlaylist = await axios.post(`${URL}/playlist`, playlistData);
+      let newPlaylist = await makeAxiosRequest(`${URL}/playlist`, "POST", {}, playlistData)
       console.log('np;', newPlaylist);
       if (!newPlaylist.data.data) {
         toast.error(newPlaylist.data.error)
@@ -36,9 +32,9 @@ const NewPlaylistModal = ({ onClose, movie }) => {
       }
       console.log(newPlaylist.data.data); // gives data
       // movie code
-      let fetchedMovie = await axios.post(`${URL}/movie/fetch`, movie)
+      let fetchedMovie = await makeAxiosRequest(`${URL}/movie/fetch`, "POST", {}, movie)
       // movie mapping
-      let playlistMovieMapping = await axios.post(`${URL}/playlist_movie/fetch`, {
+      let playlistMovieMapping = await makeAxiosRequest(`${URL}/playlist_movie/fetch`, "POST", {}, {
         playlistId: parseInt(newPlaylist.data.data.id),
         movieId: parseInt(fetchedMovie.data.data[0].id),
       })
@@ -49,16 +45,6 @@ const NewPlaylistModal = ({ onClose, movie }) => {
       toast.error('Something went wrong');
     }
 
-    // const docRef = await addDoc(collection(db, 'playlists'), {
-    //   uid: user.uid,
-    //   name: name,
-    //   mode: mode,
-    //   movies: [movie],
-    // });
-    // const playRef = doc(db, 'playlists', docRef.id);
-    // await updateDoc(playRef, {
-    //   pid: docRef.id,
-    // });
     onClose();
   };
   return (

@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom';
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
 import { URL } from '../../config/config';
+import makeAxiosRequest from '../../utils/utils';
 
 const MovieCard = ({ name, poster, imdb, mapping, setReloadFlag, reloadFlag }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDelete = async () => {
     try {
-      let deletedMovie = await axios.delete(`${URL}/playlist_movie`, { data: { id: parseInt(mapping.id) } })
+      let deletedMovie = await makeAxiosRequest(`${URL}/playlist_movie`, "DELETE", {}, { id: parseInt(mapping.id) })
       if (deletedMovie.data.data !== 1) {
         toast.error('Failed!')
       }

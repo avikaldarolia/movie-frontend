@@ -23,8 +23,8 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import { URL } from '../../config/config'
+import makeAxiosRequest from '../../utils/utils';
 
 const PlayDetail = () => {
   const user = JSON.parse(Cookies.get('user'));
@@ -43,7 +43,7 @@ const PlayDetail = () => {
       return;
     }
     try {
-      await axios.delete(`${URL}/playlist`, { data: { id: parseInt(params.id) } })
+      await makeAxiosRequest(`${URL}/playlist`, "DELETE", {}, { id: parseInt(params.id) })
       toast.success("Playlist Deleted")
       navigate('/playlists');
     } catch (err) {
@@ -55,9 +55,8 @@ const PlayDetail = () => {
   useEffect(() => {
     const getPlaylistWithMovies = async () => {
       try {
-        let response = await axios.get(`${URL}/playlist/${params.id}`)
-        setPlaylist(response.data.data)
-        console.log("RES", response.data.data); //gives data + Movies
+        let playlistWithMovies = await makeAxiosRequest(`${URL}/playlist/${params.id}`, "GET")
+        setPlaylist(playlistWithMovies.data.data)
       } catch (err) {
         toast.error('Something Went Wrong!')
       }

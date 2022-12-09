@@ -22,7 +22,7 @@ const Auth = ({ title }) => {
   };
   useEffect(() => {
     if (jwt) {
-      <Navigate to='/' />
+      return <Navigate to='/' />
     }
   }, [jwt])
 
