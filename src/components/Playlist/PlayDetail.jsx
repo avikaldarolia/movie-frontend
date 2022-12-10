@@ -162,8 +162,9 @@ const PlayDetail = () => {
 
               <ModalFooter>
                 <button
-                  className="text-white bg-black cursor-pointer px-3 py-2 rounded-xl"
+                  className={`text-white bg-red-500 cursor-pointer px-3 py-2 rounded-xl ${(deleteText !== (user.email + '/' + playlist.name).toString()) ? "opacity-70 cursor-not-allowed" : ""}`}
                   onClick={handleDelete}
+                  disabled={(deleteText !== `${user.email}/${playlist.name}`) ? true : false}
                 >
                   Delete
                 </button>

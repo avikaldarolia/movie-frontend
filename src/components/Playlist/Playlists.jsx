@@ -25,8 +25,6 @@ import makeAxiosRequest from '../../utils/utils';
 import lonely from '../../assets/lonely.gif'
 
 const Playlists = () => {
-  const jwt = Cookies.get('jwt')
-  console.log(jwt);
   const user = JSON.parse(Cookies.get('user'))
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -68,6 +66,7 @@ const Playlists = () => {
         toast.error(newPlaylist.data.error)
         return;
       }
+      toast.success('Playlist Created')
       setPlaylist([...playlist, newPlaylist.data.data])
 
     } catch (err) {

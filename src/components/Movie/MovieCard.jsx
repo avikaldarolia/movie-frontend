@@ -15,6 +15,7 @@ const MovieCard = ({ name, poster, imdb, mapping, setReloadFlag, reloadFlag }) =
       if (deletedMovie.data.data !== 1) {
         toast.error('Failed!')
       }
+      toast.success(`${name} deleted`)
     } catch (error) {
       toast.error('Something went wrong!')
     }

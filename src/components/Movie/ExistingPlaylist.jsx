@@ -25,16 +25,12 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
         playlistId: parseInt(selected.id),
         movieId: parseInt(fetchedMovie.data.data[0].id),
       })
-      console.log(playlistMovieMapping.data.data);
-      console.log(typeof playlistMovieMapping.data.data[1], playlistMovieMapping.data.data[1]);
-      // mapping existed => movie is already present in this playlist
+
       if (!playlistMovieMapping.data.data[1]) {
-        console.log("here");
         toast.error("Already present in the playlist")
+        return
       }
-      else {
-        toast.success('Added to playlist')
-      }
+      toast.success('Added to playlist')
       onClose();
     } catch (err) {
       console.log(err);

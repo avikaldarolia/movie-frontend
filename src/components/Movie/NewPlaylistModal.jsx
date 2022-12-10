@@ -25,19 +25,16 @@ const NewPlaylistModal = ({ onClose, movie }) => {
 
     try {
       let newPlaylist = await makeAxiosRequest(`${URL}/playlist`, "POST", {}, playlistData)
-      console.log('np;', newPlaylist);
       if (!newPlaylist.data.data) {
         toast.error(newPlaylist.data.error)
         return;
       }
-      console.log(newPlaylist.data.data);
 
       let fetchedMovie = await makeAxiosRequest(`${URL}/movie/fetch`, "POST", {}, movie)
-      let playlistMovieMapping = await makeAxiosRequest(`${URL}/playlist_movie/fetch`, "POST", {}, {
+      await makeAxiosRequest(`${URL}/playlist_movie/fetch`, "POST", {}, {
         playlistId: parseInt(newPlaylist.data.data.id),
         movieId: parseInt(fetchedMovie.data.data[0].id),
       })
-      console.log(playlistMovieMapping.data.data);
       toast.success('Movie added to the new playlist!')
     } catch (err) {
       console.log(err);
