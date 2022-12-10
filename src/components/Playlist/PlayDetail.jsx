@@ -25,7 +25,7 @@ import {
 import Cookies from 'js-cookie';
 import { URL } from '../../config/config'
 import makeAxiosRequest from '../../utils/utils';
-
+import nomovie from '../../assets/nomovie.gif'
 const PlayDetail = () => {
   const user = JSON.parse(Cookies.get('user'));
   const params = useParams();
@@ -123,10 +123,13 @@ const PlayDetail = () => {
               </div>
             </div>
             {playlist.Movies === undefined || playlist?.Movies.length < 1 ? (
-              <p className="mx-auto md:ml-32 mt-6 md:mt-12 mx-6 md:text-3xl">
-                Seems a bit empty here... <br /> Add some movies to see
-                the changes.
-              </p>
+              <div className="bg-[#f4f4f4] flex flex-col">
+                <p className="mx-auto md:ml-32 mt-6 md:mt-12 mx-6 md:text-3xl">
+                  Seems a bit empty here... <br /> Add some movies to see
+                  the changes.
+                </p>
+                <img className='mx-auto py-10 grow' src={nomovie} alt="" />
+              </div>
             ) : (
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-10 md:mx-28 mt-4 md:mt-8">
                 {playlist?.Movies?.map((movie, indx) => (

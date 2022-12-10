@@ -10,7 +10,6 @@ import axios from 'axios';
 import Cookies from 'js-cookie'
 const Auth = ({ title }) => {
   let jwt = Cookies.get('jwt')
-  console.log();
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({ email: '', password: '' });
   const [show, setShow] = useState(false);
@@ -50,7 +49,6 @@ const Auth = ({ title }) => {
         Cookies.set('user', JSON.stringify(response.data.data.user))
         navigate('/')
       } catch (err) {
-        console.log(err);
         if (err.toJSON().message === 'Network Error') {
           toast.error('Server is not live')
           return;
@@ -91,11 +89,11 @@ const Auth = ({ title }) => {
         <div className="w-1/2 ml-64 bg-gray-200 rounded-tl-xl rounded-bl-xl hidden md:block">
           <img
             src={wall}
-            className="h-full w-fit rounded-tl-xl rounded-bl-xl"
+            className="h-full w-fit object-fit rounded-tl-xl rounded-bl-xl"
             alt=""
           />
         </div>
-        <div className="flex flex-col mx-auto w-11/12 md:w-1/2 p-10 rounded-tl-xl md:rounded-tl-none rounded-tr-xl rounded-bl-xl md:rounded-bl-xl-none rounded-br-xl bg-[#f9790e] md:mr-64">
+        <div className="flex flex-col mx-auto w-11/12 md:w-1/2 p-10 rounded-tl-xl md:rounded-tl-none rounded-tr-xl rounded-bl-xl md:rounded-bl-none rounded-br-xl bg-[#f9790e] md:mr-64">
           <ToastContainer />
           <p className="font-bold text-3xl py-2">{title}</p>
           <label className="my-2 text-lg">Email</label>

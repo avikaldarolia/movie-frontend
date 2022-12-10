@@ -42,7 +42,6 @@ const PlayEdit = () => {
       toast.success('Playlist updated')
       navigate(-1)
     } catch (err) {
-      console.log(err);
       toast.error('Something went wrong!')
       return
     }

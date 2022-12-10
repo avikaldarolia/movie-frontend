@@ -96,7 +96,7 @@ const Playlists = () => {
         </div>
       ) : (
         <div className='flex flex-col'>
-          <div className="flex justify-between bg-gray-300 items-center py-6 px-10">
+          <div className="flex grow-0 justify-between bg-gray-300 items-center py-6 px-10">
             <div className="flex flex-col">
               <p className="md:ml-16 text-xl md:text-5xl">
                 Your Playlists...
@@ -112,7 +112,7 @@ const Playlists = () => {
             </button>
           </div>
           {playlist?.length > 0 ? (
-            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mx-10 md:mx-12 mt-10 md:mt-16">
+            <div className="grid grow sm:grid-cols-2 md:grid-cols-4 gap-4 mx-10 md:mx-12 mt-10 md:mt-16">
               {playlist &&
                 playlist.map((ply, indx) => (
                   <PlayCard
@@ -125,7 +125,7 @@ const Playlists = () => {
             </div>
           ) : (
             <div className="flex flex-col">
-              <div className="flex-grow">
+              <div className="">
                 <p className="w-4/5 mx-auto md:ml-16 text-xl py-10 md:text-4xl">
                   You dont't have any playlists yet...
                 </p>

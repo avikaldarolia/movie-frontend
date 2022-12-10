@@ -15,12 +15,10 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
   const handleSave = async (e) => {
     e.preventDefault();
     let selected = playlist[index]
-    console.log(selected);
-    // movie code beyond this
-    console.log("movie:", movie);
+
     try {
       let fetchedMovie = await makeAxiosRequest(`${URL}/movie/fetch`, "POST", {}, movie)
-      console.log("Fetched Movie", fetchedMovie.data); // fetchedMovie.data.data[0] when new
+
       let playlistMovieMapping = await makeAxiosRequest(`${URL}/playlist_movie/fetch`, "POST", {}, {
         playlistId: parseInt(selected.id),
         movieId: parseInt(fetchedMovie.data.data[0].id),
@@ -33,7 +31,6 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
       toast.success('Added to playlist')
       onClose();
     } catch (err) {
-      console.log(err);
       toast.error('Something went wrong');
     }
   };

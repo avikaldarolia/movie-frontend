@@ -37,7 +37,6 @@ const NewPlaylistModal = ({ onClose, movie }) => {
       })
       toast.success('Movie added to the new playlist!')
     } catch (err) {
-      console.log(err);
       toast.error('Something went wrong');
     }
 
