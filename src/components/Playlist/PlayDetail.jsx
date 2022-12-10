@@ -38,6 +38,7 @@ const PlayDetail = () => {
 
   // TODO: Also add paranoid true in modals later on
   const handleDelete = async (e) => {
+    e.preventDefault()
     if (deleteText !== `${user.email}/${playlist.name}`) {
       toast.error("Text doesn't match")
       return;

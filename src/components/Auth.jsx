@@ -31,7 +31,16 @@ const Auth = ({ title }) => {
     // signup
     if (title !== 'Login') {
       try {
-        let response = await axios.post(`${URL}/auth/signup`, inputs)
+        let response = await axios.post(`${URL}/auth/signup`, inputs).catch(function (err) {
+          if (err.code === "ERR_NETWORK") {
+            toast.error('Server is not live')
+          }
+        })
+
+        if (!response) {
+          return;
+        }
+
         if (!response.data.success) {
           toast.error(response.data.error)
           return;
@@ -42,24 +51,36 @@ const Auth = ({ title }) => {
         navigate('/')
       } catch (err) {
         console.log(err);
+        if (err.toJSON().message === 'Network Error') {
+          toast.error('Server is not live')
+          return;
+        }
         toast.error('Invalid Credentials');
       }
     }
     // login
     else {
       try {
-        let response = await axios.post(`${URL}/auth/login`, inputs)
+        let response = await axios.post(`${URL}/auth/login`, inputs).catch(function (err) {
+          if (err.code === "ERR_NETWORK") {
+            toast.error('Server is not live')
+          }
+        })
+
+        if (!response) {
+          return;
+        }
+
         if (!response.data.success) {
           toast.error(response.data.error)
           return;
         }
-        console.log("RES", response.data);
         Cookies.set('jwt', JSON.stringify(response.data.data.jwt))
         Cookies.set('user', JSON.stringify(response.data.data.user))
         navigate('/')
+
       } catch (err) {
-        console.log(err);
-        toast.error('Invalid Credentials');
+        toast.error('Something went wrong');
       }
     }
   };

@@ -21,7 +21,7 @@ const SearchBar = ({ q }) => {
       });
   };
   return (
-    <div className="flex justify-center mt-4">
+    <div className="flex justify-center mt-8">
       <ToastContainer />
       <div className="mb-3 xl:w-96">
         <div className="input-group relative flex items-stretch w-full mb-4">

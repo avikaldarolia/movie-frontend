@@ -30,10 +30,9 @@ const NewPlaylistModal = ({ onClose, movie }) => {
         toast.error(newPlaylist.data.error)
         return;
       }
-      console.log(newPlaylist.data.data); // gives data
-      // movie code
+      console.log(newPlaylist.data.data);
+
       let fetchedMovie = await makeAxiosRequest(`${URL}/movie/fetch`, "POST", {}, movie)
-      // movie mapping
       let playlistMovieMapping = await makeAxiosRequest(`${URL}/playlist_movie/fetch`, "POST", {}, {
         playlistId: parseInt(newPlaylist.data.data.id),
         movieId: parseInt(fetchedMovie.data.data[0].id),
@@ -73,7 +72,7 @@ const NewPlaylistModal = ({ onClose, movie }) => {
         </Stack>
       </RadioGroup>
       <button
-        className="bg-[#f9790e] px-3 py-2 rounded-xl hover:text-white mt-4"
+        className="bg-[#f9790e] w-full px-3 py-2 rounded-xl hover:text-white mt-4"
         onClick={handleSave}
       >
         Save

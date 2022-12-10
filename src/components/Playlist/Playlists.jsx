@@ -22,6 +22,8 @@ import PlayCard from './PlayCard';
 import Cookies from 'js-cookie';
 import { URL } from "../../config/config";
 import makeAxiosRequest from '../../utils/utils';
+import lonely from '../../assets/lonely.gif'
+
 const Playlists = () => {
   const jwt = Cookies.get('jwt')
   console.log(jwt);
@@ -77,7 +79,7 @@ const Playlists = () => {
   };
 
   return (
-    <div className="w-full ">
+    <div className="w-full bg-[#F4F4F4]">
       <ToastContainer />
       <Navbar />
       {isLoading ? (
@@ -94,10 +96,10 @@ const Playlists = () => {
           />
         </div>
       ) : (
-        <>
-          <div className="flex justify-between items-center mt-6 mx-10">
+        <div className='flex flex-col'>
+          <div className="flex justify-between bg-gray-300 items-center py-6 px-10">
             <div className="flex flex-col">
-              <p className="md:ml-16 text-2xl md:text-5xl">
+              <p className="md:ml-16 text-xl md:text-5xl">
                 Your Playlists...
               </p>
               <p className="font-light text-sm md:text-xl md:ml-16">(Click for details)</p>
@@ -123,9 +125,14 @@ const Playlists = () => {
                 ))}
             </div>
           ) : (
-            <p className="ml-16 text-4xl mt-3">
-              You dont't have any playlists yet...
-            </p>
+            <div className="flex flex-col">
+              <div className="flex-grow">
+                <p className="w-4/5 mx-auto md:ml-16 text-xl py-10 md:text-4xl">
+                  You dont't have any playlists yet...
+                </p>
+                <img className='object-fit w-fit h-fit bg-center mx-auto pointer-events-none' src={lonely} alt="empty" />
+              </div>
+            </div>
           )}
 
           <Modal isOpen={isOpen} onClose={onClose}>
@@ -168,7 +175,7 @@ const Playlists = () => {
               </ModalFooter>
             </ModalContent>
           </Modal>
-        </>
+        </div>
       )}
     </div>
   );

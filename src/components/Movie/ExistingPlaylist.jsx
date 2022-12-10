@@ -78,7 +78,8 @@ const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
         )
       }
       <button
-        className="bg-[#f9790e] px-3 py-2 rounded-xl hover:text-white mt-4"
+        className={`bg-[#f9790e] px-3 py-2 rounded-xl mt-4 ${playlist.length ? 'block hover:text-white' : 'opacity-30 cursor-not-allowed'} `}
+        disabled={!playlist.length}
         onClick={handleSave}
       >
         Save
