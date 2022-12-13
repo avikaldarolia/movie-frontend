@@ -19,6 +19,7 @@ const makeAxiosRequest = async (url, method, headers = {}, body = '', auth = '')
         err: ''
     };
     let jwt = JSON.parse(Cookies.get('jwt'))
+    console.log(jwt);
     headers.authorization = jwt
     let params = {
         url: url,

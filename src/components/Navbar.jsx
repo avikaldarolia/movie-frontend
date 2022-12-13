@@ -1,10 +1,14 @@
 import React from 'react';
 import { FiLogOut } from 'react-icons/fi';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import SearchBar from './SearchBar';
 const Navbar = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation()
+
+  console.log(pathname);
   const handleLogout = () => {
     Cookies.remove('user')
     Cookies.remove('jwt')
@@ -18,7 +22,11 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className="text-white mx-auto cursor-pointer hover:text-[#f9790e]">
+      <div className={`hidden md:${pathname !== '/' && 'block'}`}>
+        <SearchBar q={'t'} />
+      </div>
+
+      <div className="text-white cursor-pointer hover:text-[#f9790e]">
         <Link to="/playlists">My Playlists</Link>
       </div>
 

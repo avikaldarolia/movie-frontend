@@ -58,6 +58,7 @@ const PlayDetail = () => {
       try {
         let playlistWithMovies = await makeAxiosRequest(`${URL}/playlist/${params.id}`, "GET")
         setPlaylist(playlistWithMovies.data.data)
+        console.log(playlistWithMovies.data.data);
       } catch (err) {
         toast.error('Something Went Wrong!')
       }
@@ -68,7 +69,7 @@ const PlayDetail = () => {
   }, [params.id, reloadFlag])
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-[#F4F4F4] h-screen">
       <ToastContainer />
       <Navbar />
       {isLoading ? (
@@ -87,7 +88,7 @@ const PlayDetail = () => {
       ) : (
         <>
           <div className="w-full flex flex-col">
-            <div className="w-full flex flex-col bg-gray-200 md:flex-row items-center py-2 md:py-5 w-full">
+            <div className="w-full flex flex-col bg-gray-300 md:flex-row items-center py-2 md:py-5">
               <div className="flex justify-between items-center w-11/12 md:w-4/5 md:mx-10">
                 <Link to="/playlists">
                   <IoMdArrowRoundBack
@@ -123,12 +124,12 @@ const PlayDetail = () => {
               </div>
             </div>
             {playlist.Movies === undefined || playlist?.Movies.length < 1 ? (
-              <div className="bg-[#f4f4f4] flex flex-col">
-                <p className="mx-auto md:ml-32 mt-6 md:mt-12 mx-6 md:text-3xl">
+              <div className="flex flex-col">
+                <p className="mx-auto my-6 md:mt-12 md:text-3xl">
                   Seems a bit empty here... <br /> Add some movies to see
                   the changes.
                 </p>
-                <img className='mx-auto py-10 grow' src={nomovie} alt="" />
+                <img className='md:mt-16 rounded rounded-xl object-fit w-4/5 md:w-fit bg-center mx-auto pointer-events-none' src={nomovie} alt="" />
               </div>
             ) : (
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-10 md:mx-28 mt-4 md:mt-8">
