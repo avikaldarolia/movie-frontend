@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import Navbar from './Navbar';
-import SearchBar from './SearchBar';
+import SearchBar from './SearchBar/SearchMovieBar';
 import one from '../assets/one.jpeg'
 const Homepage = () => {
 

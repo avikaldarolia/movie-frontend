@@ -28,6 +28,7 @@ const makeAxiosRequest = async (url, method, headers = {}, body = '', auth = '')
         data: body,
         json: true
     };
+    console.log(params);
     if (auth !== "") {
         params.auth = auth;
     }

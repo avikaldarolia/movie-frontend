@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const SearchBar = ({ q }) => {
+const SearchMovieBar = ({ q }) => {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
-  const handleQuery = (e) => {
+  const handleQuery = async (e) => {
     e.preventDefault();
-    axios
+    await axios
       .get(`//www.omdbapi.com/?apikey=55d8034d&${q}=${query}`)
       .then((res) => {
         if (res.data.Response === 'False') {
@@ -27,7 +27,7 @@ const SearchBar = ({ q }) => {
           <input
             type="search"
             className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-[#f9790e] focus:outline-none"
-            placeholder="Search"
+            placeholder="Search Movie/Show"
             value={query}
             onKeyPress={(e) => {
               if (e.key === 'Enter') {
@@ -64,4 +64,4 @@ const SearchBar = ({ q }) => {
   );
 };
 
-export default SearchBar;
+export default SearchMovieBar;

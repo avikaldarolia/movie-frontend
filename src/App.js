@@ -12,10 +12,13 @@ import MovieDetail from './components/Movie/MovieDetail';
 import PlayEdit from './components/Playlist/PlayEdit';
 import NotFound from './components/NotFound';
 import PrivateRoutes from './utils/PrivateRoute';
+import Friends from './components/Friends/Friends';
+import Profile from './components/Profile/Profile';
 
 function App() {
   const navigate = useNavigate();
   let jwt = Cookies.get('jwt')
+  console.log(jwt);
   useEffect(() => {
     if (!jwt) {
       navigate('/login');
@@ -26,6 +29,8 @@ function App() {
     <Routes>
       <Route element={<PrivateRoutes />}>
         <Route path="/" element={<Homepage />} />
+        <Route path="/friends" element={<Friends />} />
+        <Route path="/user/profile" element={<Profile />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/playlists" element={<Playlists />} />
         <Route path="/playlists/:id" element={<PlayDetail />} />

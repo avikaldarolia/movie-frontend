@@ -11,7 +11,7 @@ import Cookies from 'js-cookie'
 const Auth = ({ title }) => {
   let jwt = Cookies.get('jwt')
   const navigate = useNavigate();
-  const [inputs, setInputs] = useState({ email: '', password: '' });
+  const [inputs, setInputs] = useState({ username: '', email: '', password: '' });
   const [show, setShow] = useState(false);
   const handleChange = (e) => {
     setInputs((prevState) => ({
@@ -96,6 +96,15 @@ const Auth = ({ title }) => {
         <div className="flex flex-col mx-auto w-11/12 md:w-1/2 p-10 rounded-tl-xl md:rounded-tl-none rounded-tr-xl rounded-bl-xl md:rounded-bl-none rounded-br-xl bg-[#f9790e] md:mr-64">
           <ToastContainer />
           <p className="font-bold text-3xl py-2">{title}</p>
+          <label className={`my-2 text-lg ${title === 'Signup' ? 'block' : 'hidden'}`}>Username</label>
+          <input
+            onChange={handleChange}
+            name="username"
+            value={inputs.username}
+            type="text"
+            className={`py-2 rounded-lg pl-2 ${title === 'Signup' ? 'block' : 'hidden'}`}
+            placeholder="Username"
+          />
           <label className="my-2 text-lg">Email</label>
           <input
             onChange={handleChange}
