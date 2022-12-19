@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { URL } from '../../config/config';
@@ -29,7 +29,7 @@ const SearchUserBar = () => {
         e.preventDefault();
         const usernames = await makeAxiosRequest(`${URL}/user/search`, "POST", {}, { username: query })
         console.log("usernames", usernames.data.data);
-        if (usernames.data.data.length === 0) {
+        if (usernames?.data.data.length === 0) {
             toast.error("User doesn't exists")
         }
         setUsers(usernames.data.data)
