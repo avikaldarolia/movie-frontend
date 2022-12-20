@@ -14,7 +14,7 @@ const Navbar = () => {
     Cookies.remove('jwt')
     navigate('/login');
   };
-  let user = JSON.parse(Cookies.get('user'))
+  // let user = JSON.parse(Cookies.get('user'))
   return (
     <div className="flex md:justify-between bg-black items-center py-1.5 md:py-5 px-2 md:px-12">
       <div className="flex items-center">
@@ -37,7 +37,9 @@ const Navbar = () => {
           <div className="flex flex-col justify-center items-center absolute m-auto left-0 right-0 z-20">
             <div className='triangle-up mx-auto mt-0.5' />
             <div className='flex items-center divide-y divide-white-400 justify-center py-3 flex-col bg-[#f9790e] w-fit px-6 rounded rounded-lg'>
-              <p onClick={() => navigate('/user/profile', { state: { id: parseInt(user.id), username: user.username } })} className="cursor-pointer text-black hover:text-white hover:opacity-70">Profile</p>
+              <Link to="/user/profile">
+                <p className="cursor-pointer text-black hover:text-white hover:opacity-70">Profile</p>
+              </Link>
               <Link to="/friends">
                 <p className="cursor-pointer text-black hover:text-white hover:opacity-70">Friends</p>
               </Link>

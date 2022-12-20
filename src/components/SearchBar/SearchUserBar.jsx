@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { URL } from '../../config/config';
@@ -78,9 +78,9 @@ const SearchUserBar = () => {
                 <div className="flex flex-col items-center w-full shadow rounded rounded-b-xl divide-y divide-gray-300 ">
                     {users?.map((uu) => (
                         <div className="w-full p-2 bg-white">
-                            {/* <Link to='userprofile/id'> */}
-                            <p onClick={() => navigate('/user/profile', { state: uu })} className=''>{uu.username}</p>
-                            {/* </Link> */}
+                            <Link to={`/user/profile/${uu.id}`}>
+                                <p onClick={() => navigate('/user/profile', { state: uu })} className=''>{uu.username}</p>
+                            </Link>
                         </div>
                     ))}
                 </div>

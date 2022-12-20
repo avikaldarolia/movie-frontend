@@ -14,6 +14,7 @@ import NotFound from './components/NotFound';
 import PrivateRoutes from './utils/PrivateRoute';
 import Friends from './components/Friends/Friends';
 import Profile from './components/Profile/Profile';
+import MyProfile from './components/Profile/MyProfile';
 
 function App() {
   const navigate = useNavigate();
@@ -30,7 +31,8 @@ function App() {
       <Route element={<PrivateRoutes />}>
         <Route path="/" element={<Homepage />} />
         <Route path="/friends" element={<Friends />} />
-        <Route path="/user/profile" element={<Profile />} />
+        <Route path="/user/profile" element={<MyProfile />} />
+        <Route path="/user/profile/:profileId" element={<Profile />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/playlists" element={<Playlists />} />
         <Route path="/playlists/:id" element={<PlayDetail />} />
