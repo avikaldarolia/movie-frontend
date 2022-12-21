@@ -28,8 +28,8 @@ const Requests = () => {
         <div className='flex bg-[#F4F4F4] flex-col h-screen'>
             <Navbar />
             <div className="flex items-center w-full  bg-gray-300 py-4 w-full relative">
-                <IoMdArrowRoundBack className='absolute left-7 fill-black hover:fill-[#f9790e] ml-4 w-8 h-8 cursor-pointer' onClick={() => navigate(-1)} />
-                <p className='text-center w-full text-3xl md:text-5xl'>{status} Requests</p>
+                <IoMdArrowRoundBack className='absolute left-1 md:left-7 fill-black hover:fill-[#f9790e] ml-4 w-8 h-8 cursor-pointer' onClick={() => navigate(-1)} />
+                <p className='text-center w-full text-xl md:text-5xl'>{status} Requests</p>
             </div>
             <div className="w-4/5 mx-auto my-5">
                 {status === 'Incoming' ? (<IncomingList reload={reload} setReload={setReload} requests={requests} />) :

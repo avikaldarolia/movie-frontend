@@ -37,7 +37,7 @@ const DeclinedList = ({ reload, setReload, requests }) => {
 
 
     return (
-        <div className='flex flex-col my-5'>
+        <div className='flex flex-col md:my-5'>
             {isLoading || !myDeclined || !othersDeclined ? (
                 <div className="m-auto h-screen">
                     <Spinner
@@ -50,13 +50,13 @@ const DeclinedList = ({ reload, setReload, requests }) => {
                     />
                 </div>
             ) : (
-                <div className='w-full divide-x divide-gray-300 flex'>
+                <div className='w-full md:divide-x md:divide-gray-300 flex flex-col md:flex-row'>
                     {/* you declined */}
-                    <div className="w-1/2 flex flex-col">
-                        <p className='text-3xl text-center'>You Declined</p>
+                    <div className="w-full md:w-1/2 flex flex-col">
+                        <p className='text-xl md:text-3xl text-center'>You Declined...</p>
                         <div className='w-11/12 border border-black mx-auto mb-1' />
                         {myDeclined?.length > 0 ? (myDeclined?.map(req => (
-                            <div key={req.id} className="flex my-2 mx-auto justify-between items-center w-2/5 rounded p-4 rounded-lg bg-black text-white">
+                            <div key={req.id} className="flex my-2 mx-auto justify-between items-center w-10/12 md:w-2/5 rounded p-4 rounded-lg bg-black text-white">
                                 <div className="flex flex-col">
                                     <p className='text-lg text-[#f9790e]'>{req.Sender.username}</p>
                                     <p className=''>Joined on: {new Date(req.Sender.createdAt).toJSON().slice(0, 10).replace(/-/g, '/')}</p>
@@ -72,8 +72,8 @@ const DeclinedList = ({ reload, setReload, requests }) => {
                             </div>
                         )}
                     </div>
-                    <div className="w-1/2 flex flex-col">
-                        <p className='text-3xl text-center'>Your request got declined by</p>
+                    <div className="w-full md:w-1/2 mt-2 md:mt-0 flex flex-col">
+                        <p className='text-xl md:text-3xl text-center'>Your request got declined by</p>
                         <div className='w-11/12 border border-black mx-auto mb-1' />
                         {othersDeclined?.length > 0 ? (othersDeclined?.map(req => (
                             <div key={req.id} className="flex my-2 mx-auto justify-between items-center w-2/5 rounded p-4 rounded-lg bg-black text-white">
@@ -84,7 +84,7 @@ const DeclinedList = ({ reload, setReload, requests }) => {
                             </div>
                         ))) : (
                             <div className="flex flex-col text-center w-full">
-                                <p className='text-2xl mt-2'>No one...</p>
+                                <p className='md:text-2xl md:mt-2'>No one...</p>
                                 <img className='md:mt-6 rounded rounded-xl object-fit w-4/5 md:w-fit h-[40vh] bg-center mx-auto pointer-events-none' src={surprised} alt="" />
                             </div>
                         )}

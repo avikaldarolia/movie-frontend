@@ -9,7 +9,7 @@ const Friends = () => {
         <div className='flex flex-col w-full bg-[#F4F4F4] h-screen'>
             <Navbar />
             <div className="flex flex-col">
-                <div className="flex justify-around bg-gray-300 items-center py-5">
+                <div className="flex flex-wrap gap-y-2 md:gap-y-0 md:flex-row justify-around bg-gray-300 items-center py-5">
                     <button onClick={() => navigate('/friends/requests/Declined')} className='py-1 px-3 rounded bg-black text-white'>
                         Declined Requests
                     </button>

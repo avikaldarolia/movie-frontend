@@ -29,9 +29,9 @@ const SentList = ({ requests }) => {
             ) : (
                 <>
                     {list?.length > 0 ? (list?.map(req => (
-                        <div key={req.id} className="flex my-2 justify-between items-center w-2/5 rounded p-4 rounded-lg bg-black text-white">
+                        <div key={req.id} className="flex my-2 justify-between items-center w-full md:w-2/5 rounded p-4 rounded-lg bg-black text-white">
                             <div className="flex flex-col">
-                                <p className='text-lg text-[#f9790e]'>{req.Receiver.username}<span className='text-white'>, Joined on: {new Date(req.Sender.createdAt).toJSON().slice(0, 10).replace(/-/g, '/')}</span></p>
+                                <p className='md:text-lg text-[#f9790e]'>{req.Receiver.username}<span className='text-white'>, Joined on: {new Date(req.Sender.createdAt).toJSON().slice(0, 10).replace(/-/g, '/')}</span></p>
                                 <p>Sent on: {new Date(req.createdAt).toJSON().slice(0, 10).replace(/-/g, '/')}</p>
                             </div>
                         </div>

@@ -84,8 +84,8 @@ const MyProfile = () => {
                             Your Profile
                         </p>
                     </div>
-                    <div className="w-full flex my-3 divide-x divide-gray-300">
-                        <div className="w-1/2" >
+                    <div className="w-full flex flex-col md:flex-row my-3 md:divide-x md:divide-gray-300">
+                        <div className="w-full md:w-1/2" >
                             <p className='text-center text-3xl'>Friends</p>
                             <div className='w-11/12 border border-black mx-auto mb-1' />
                             {friends?.length > 0 ? (
@@ -114,7 +114,7 @@ const MyProfile = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="w-1/2" >
+                        <div className="w-full md:w-1/2" >
                             <p className='text-center text-3xl'>Playlists</p>
                             <div className='w-11/12 border border-black mx-auto mb-1' />
                             {playlist?.length > 0 ? (

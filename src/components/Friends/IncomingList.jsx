@@ -44,14 +44,14 @@ const IncomingList = ({ reload, setReload, requests }) => {
             ) : (
                 <>
                     {list?.length > 0 ? (list?.map(req => (
-                        <div key={req.id} className="flex my-2 justify-between items-center w-2/5 rounded p-4 rounded-lg bg-black text-white">
+                        <div key={req.id} className="flex my-2 justify-between items-center w-full md:w-2/5 rounded p-4 rounded-lg bg-black text-white">
                             <div className="flex flex-col">
-                                <p className='text-lg text-[#f9790e]'>{req.Sender.username}</p>
+                                <p className='md:text-lg text-[#f9790e]'>{req.Sender.username}</p>
                                 <p className=''>Joined on: {new Date(req.Sender.createdAt).toJSON().slice(0, 10).replace(/-/g, '/')}</p>
                             </div>
                             <div className="flex items-center mt-3">
-                                <button className='bg-blue-600 rounded px-3 py-0.5' onClick={(e) => handleRequest(e, req.id, 'Accepted')} >Accept</button>
-                                <button className='bg-red-600 rounded px-3 py-0.5 ml-2' onClick={(e) => handleRequest(e, req.id, 'Declined')}>Decline</button>
+                                <button className='bg-blue-600 rounded px-1 md:px-3 py-0.5' onClick={(e) => handleRequest(e, req.id, 'Accepted')} >Accept</button>
+                                <button className='bg-red-600 rounded px-1 md:px-3 py-0.5 ml-2' onClick={(e) => handleRequest(e, req.id, 'Declined')}>Decline</button>
                             </div>
                         </div>
                     ))) : (

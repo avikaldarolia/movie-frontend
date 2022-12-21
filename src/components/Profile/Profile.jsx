@@ -113,16 +113,16 @@ const Profile = () => {
                 </div>
             ) : (
                 <>
-                    <div className="flex w-full justify-center bg-gray-300 items-center py-6">
-                        <IoMdArrowRoundBack className='absolute left-7 fill-black hover:fill-[#f9790e] ml-4 w-8 h-8 cursor-pointer' onClick={() => navigate(-1)} />
-                        <p className='text-center text-4xl'>
+                    <div className="flex flex-col md:flex-row w-full justify-center bg-gray-300 items-center py-6">
+                        <IoMdArrowRoundBack className='absolute left-2 md:left-7 fill-black hover:fill-[#f9790e] ml-4 w-8 h-8 cursor-pointer' onClick={() => navigate(-1)} />
+                        <p className='text-center text-xl md:text-4xl'>
                             {`${profileUser.username}'s`}  Profile
                         </p>
                         {mapping ?
                             (mapping?.status === 'Accepted' ?
                                 <div className="flex items-center">
-                                    <p className='ml-4 py-1 bg-green-300 px-2 rounded text-center'>Friends</p>
-                                    <button onClick={() => onOpen()} className='ml-4 py-1 bg-red-300 px-2 rounded text-center'>Remove Friend</button>
+                                    <p className='ml-4 py-1 bg-green-300 px-1 md:px-2 text-sm rounded text-center'>Friends</p>
+                                    <button onClick={() => onOpen()} className='ml-4 py-1 bg-red-300 px-1 text-sm md:px-2 rounded text-center'>Remove Friend</button>
                                 </div>
                                 :
                                 <p className='ml-4 py-1 bg-[#f9790e] px-2 rounded text-center'>Check Requests/Declined</p>
@@ -137,8 +137,8 @@ const Profile = () => {
                                 </button>
                             )}
                     </div>
-                    <div className="w-full flex divide-x divide-gray-300">
-                        <div className="w-1/2" >
+                    <div className="w-full flex flex-col md:flex-row md:divide-x md:divide-gray-300 md:mt-4">
+                        <div className="w-full md:w-1/2" >
                             <p className='text-center text-3xl'>Friends</p>
                             <div className='w-11/12 border border-black mx-auto mb-1' />
                             {friends?.length > 0 ? (
@@ -164,7 +164,7 @@ const Profile = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="w-1/2" >
+                        <div className="w-full md:w-1/2" >
                             <p className='text-center text-3xl'>Playlists</p>
                             <div className='w-11/12 border border-black mx-auto mb-1' />
                             {playlist?.length > 0 ? (
@@ -182,7 +182,7 @@ const Profile = () => {
                                 </div>
                             ) : (
                                 <div className="flex flex-col">
-                                    <p className="w-4/5 mx-auto md:ml-16 text-xl py-10 md:text-4xl">
+                                    <p className="w-4/5 mx-auto md:ml-16 text-xl py-4 md:py-10 md:text-4xl">
                                         {profileUser.username} doesn't have any playlists yet...
                                     </p>
                                     <img className='md:mt-6 rounded rounded-xl object-fit w-4/5 md:w-fit h-fit bg-center mx-auto pointer-events-none' src={lonely} alt="empty" />
