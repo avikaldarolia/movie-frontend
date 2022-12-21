@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { URL } from '../../config/config'
 import makeAxiosRequest from '../../utils/utils'
 import Navbar from '../Navbar'
@@ -20,18 +20,19 @@ import {
     Spinner
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
+import { IoMdArrowRoundBack } from 'react-icons/io'
 
 const Profile = () => {
     const loggedInUser = JSON.parse(Cookies.get('user'))
     let { profileId } = useParams();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const [profileUser, setProfileUser] = useState()
     const [playlist, setPlaylist] = useState();
     const [friends, setFriends] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [mapping, setMapping] = useState(null);
-    const [selectedFriend, setSelectedFriend] = useState(null);
+    // const [selectedFriend, setSelectedFriend] = useState(null);
 
     const [reloadFlag, setReloadFlag] = useState(false)
 
@@ -84,8 +85,8 @@ const Profile = () => {
     const handleDelete = async (e) => {
         e.preventDefault()
         try {
-            await makeAxiosRequest(`${URL}/friends/removeFriend`, "POST", {}, { id: parseInt(selectedFriend.id) })
-            toast.success(`${selectedFriend.username} remove from friends`)
+            await makeAxiosRequest(`${URL}/friends/removeFriend`, "POST", {}, { id: parseInt(mapping.id) })
+            toast.success(`${profileUser.username} remove from friends`)
             setReloadFlag(true)
             onClose()
         } catch (err) {
@@ -112,7 +113,8 @@ const Profile = () => {
                 </div>
             ) : (
                 <>
-                    <div className="flex mx-auto items-center  my-6">
+                    <div className="flex w-full justify-center bg-gray-300 items-center py-6">
+                        <IoMdArrowRoundBack className='absolute left-7 fill-black hover:fill-[#f9790e] ml-4 w-8 h-8 cursor-pointer' onClick={() => navigate(-1)} />
                         <p className='text-center text-4xl'>
                             {`${profileUser.username}'s`}  Profile
                         </p>
@@ -120,7 +122,7 @@ const Profile = () => {
                             (mapping?.status === 'Accepted' ?
                                 <div className="flex items-center">
                                     <p className='ml-4 py-1 bg-green-300 px-2 rounded text-center'>Friends</p>
-                                    <button className='ml-4 py-1 bg-red-300 px-2 rounded text-center'>Remove Friend</button>
+                                    <button onClick={() => onOpen()} className='ml-4 py-1 bg-red-300 px-2 rounded text-center'>Remove Friend</button>
                                 </div>
                                 :
                                 <p className='ml-4 py-1 bg-[#f9790e] px-2 rounded text-center'>Check Requests/Declined</p>
@@ -194,7 +196,7 @@ const Profile = () => {
                             <ModalHeader className="">Delete Playlist</ModalHeader>
                             <ModalCloseButton />
                             <ModalBody>
-                                <p className='mt-2 mb-10'>Are you sure you want to remove <b>{selectedFriend?.username}</b> as your friend? </p>
+                                <p className='mt-2 mb-10'>Are you sure you want to remove <b>{profileUser?.username}</b> as your friend? </p>
                             </ModalBody>
 
                             <ModalFooter>

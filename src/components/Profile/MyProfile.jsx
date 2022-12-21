@@ -79,12 +79,12 @@ const MyProfile = () => {
                 </div>
             ) : (
                 <>
-                    <div className="flex justify-center items-center  my-6">
+                    <div className="flex justify-center items-center bg-gray-300 py-6">
                         <p className='text-center text-4xl'>
                             Your Profile
                         </p>
                     </div>
-                    <div className="w-full flex divide-x divide-gray-300">
+                    <div className="w-full flex my-3 divide-x divide-gray-300">
                         <div className="w-1/2" >
                             <p className='text-center text-3xl'>Friends</p>
                             <div className='w-11/12 border border-black mx-auto mb-1' />
