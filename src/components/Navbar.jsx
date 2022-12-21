@@ -43,6 +43,9 @@ const Navbar = () => {
               <Link to="/friends">
                 <p className="cursor-pointer text-black hover:text-white hover:opacity-70">Friends</p>
               </Link>
+              <Link to="/chat">
+                <p className="cursor-pointer text-black hover:text-white hover:opacity-70">Chat</p>
+              </Link>
               <Link to="/playlists">
                 <p className="cursor-pointer text-black hover:text-white hover:opacity-70">Playlists</p>
               </Link>
