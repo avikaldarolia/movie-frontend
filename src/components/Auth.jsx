@@ -4,7 +4,8 @@ import { Navigate, useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiHide } from 'react-icons/bi';
-import wall from '../assets/wall.jpeg';
+// import wall from '../assets/wall.jpeg';
+import homeMaybe from '../assets/homeMaybe.gif';
 import { URL } from "../config/config";
 import axios from 'axios';
 import Cookies from 'js-cookie'
@@ -88,8 +89,8 @@ const Auth = ({ title }) => {
       <div className="flex flex-col md:flex-row w-11/12 mx-auto md:mx-none md:w-full mt-8 md:mt-16">
         <div className="w-1/2 ml-64 bg-gray-200 rounded-tl-xl rounded-bl-xl hidden md:block">
           <img
-            src={wall}
-            className="h-full w-fit object-fit rounded-tl-xl rounded-bl-xl"
+            src={homeMaybe}
+            className="w-full h-full rounded-tl-xl rounded-bl-xl"
             alt=""
           />
         </div>

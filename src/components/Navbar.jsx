@@ -8,13 +8,13 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation()
   const [dropdownState, setDropdownState] = useState(false);
-  console.log(pathname);
+
   const handleLogout = () => {
     Cookies.remove('user')
     Cookies.remove('jwt')
     navigate('/login');
   };
-  // let user = JSON.parse(Cookies.get('user'))
+
   return (
     <div className="flex md:justify-between bg-black items-center py-1.5 md:py-5 px-2 md:px-12">
       <div className="flex items-center">

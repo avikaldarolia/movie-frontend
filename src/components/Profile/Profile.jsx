@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { useParams } from 'react-router'
 import { URL } from '../../config/config'
 import makeAxiosRequest from '../../utils/utils'
 import Navbar from '../Navbar'
@@ -19,7 +19,6 @@ import {
     useDisclosure,
     Spinner
 } from '@chakra-ui/react'
-import { MdDelete } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 
 const Profile = () => {
@@ -33,11 +32,8 @@ const Profile = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [mapping, setMapping] = useState(null);
     const [selectedFriend, setSelectedFriend] = useState(null);
-    // const [self, setSelf] = useState(false);
-    // const { state } = useLocation();
+
     const [reloadFlag, setReloadFlag] = useState(false)
-    // const { id, username } = state; // Read values passed on state
-    // let user = parseInt(loggedInUser.id) === parseInt(id) ? 'Your' : `${username}`
 
     useEffect(() => {
         const getUser = async () => {
@@ -138,7 +134,6 @@ const Profile = () => {
                                     Send friend request
                                 </button>
                             )}
-                        {/* {mapping?.status === 'Accepted' && <button className='ml-auto py-1 bg-red-300 px-2 rounded text-center'>Remove Friend</button>} */}
                     </div>
                     <div className="w-full flex divide-x divide-gray-300">
                         <div className="w-1/2" >
@@ -150,7 +145,7 @@ const Profile = () => {
                                         let friendObj = friend.Sender.id !== profileId ? friend.Sender : friend.Receiver
                                         friend.username = friendObj.username
                                         return (
-                                            <div className="w-full py-1 cursor-pointer flex items-center">
+                                            <div key={friend.id} className="w-full py-1 cursor-pointer flex items-center">
                                                 <Link className='w-full text-center' to={parseInt(friendObj.id) === parseInt(loggedInUser.id) ? `/user/profile` : `/user/profile/${friendObj.id}`}>
                                                     <p className='w-full' >{friendObj.username}</p>
                                                 </Link>
@@ -173,9 +168,9 @@ const Profile = () => {
                             {playlist?.length > 0 ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mx-8 md:mx-auto mt-4 md:mt-8">
                                     {playlist &&
-                                        playlist.map((ply, indx) => (
+                                        playlist.map((ply) => (
                                             <PlayCard
-                                                key={indx}
+                                                key={ply.id}
                                                 name={ply.name}
                                                 mode={ply.isPrivate ? "Private" : "Public"}
                                                 id={ply.id}

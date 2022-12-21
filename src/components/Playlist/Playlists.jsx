@@ -117,7 +117,7 @@ const Playlists = () => {
               {playlist &&
                 playlist.map((ply, indx) => (
                   <PlayCard
-                    key={indx}
+                    key={ply.id}
                     name={ply.name}
                     mode={ply.isPrivate ? "Private" : "Public"}
                     id={ply.id}

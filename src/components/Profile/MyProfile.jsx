@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
-// import { useNavigate } from 'react-router'
 import { URL } from '../../config/config'
 import makeAxiosRequest from '../../utils/utils'
 import Navbar from '../Navbar'
@@ -8,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PlayCard from '../Playlist/PlayCard'
 import lonely from '../../assets/lonely.gif'
+import nothing from '../../assets/nothing.gif'
 import {
     Modal,
     ModalOverlay,
@@ -24,7 +24,6 @@ import { Link } from 'react-router-dom'
 
 const MyProfile = () => {
     const user = JSON.parse(Cookies.get('user'))
-    // const navigate = useNavigate();
     const [playlist, setPlaylist] = useState();
     const [friends, setFriends] = useState();
     const [isLoading, setIsLoading] = useState(true);
@@ -95,7 +94,7 @@ const MyProfile = () => {
                                         let friendObj = friend.Sender.username !== user.username ? friend.Sender : friend.Receiver
                                         friend.username = friendObj.username
                                         return (
-                                            <div className="w-full py-1 cursor-pointer flex items-center">
+                                            <div key={friend.id} className="w-full py-1 cursor-pointer flex items-center">
                                                 <Link to={`/user/profile/${friendObj.id}`} className='w-full text-center'>
                                                     <p>
                                                         {friendObj.username}
@@ -111,7 +110,7 @@ const MyProfile = () => {
                                     <p className="w-4/5 mx-auto md:ml-16 text-xl py-10 md:text-4xl">
                                         You don't have any friends yet...
                                     </p>
-                                    <img className='md:mt-6 rounded rounded-xl object-fit w-4/5 md:w-fit h-fit bg-center mx-auto pointer-events-none' src={lonely} alt="empty" />
+                                    <img style={{ height: '40vh' }} className='md:mt-3 rounded rounded-xl object-fit w-4/5 md:w-fit bg-center mx-auto pointer-events-none' src={nothing} alt="empty" />
                                 </div>
                             )}
                         </div>
@@ -123,7 +122,7 @@ const MyProfile = () => {
                                     {playlist &&
                                         playlist.map((ply, indx) => (
                                             <PlayCard
-                                                key={indx}
+                                                key={ply.id}
                                                 name={ply.name}
                                                 mode={ply.isPrivate ? "Private" : "Public"}
                                                 id={ply.id}
