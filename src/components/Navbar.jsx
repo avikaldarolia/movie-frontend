@@ -1,34 +1,57 @@
-import React from 'react';
-import { FiLogOut } from 'react-icons/fi';
-import { useNavigate } from 'react-router';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { FaUserNinja } from "react-icons/fa"
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import SearchBar from './SearchBar/SearchMovieBar';
 const Navbar = () => {
   const navigate = useNavigate();
-  // const user = useFirebaseAuth();
-  const user = Cookies.get('user');
+  const { pathname } = useLocation()
+  const [dropdownState, setDropdownState] = useState(false);
+
   const handleLogout = () => {
-    sessionStorage.removeItem('Auth Token');
+    Cookies.remove('user')
+    Cookies.remove('jwt')
     navigate('/login');
   };
+
   return (
-    <div className="flex bg-black items-center">
+    <div className="flex justify-between bg-black items-center py-1.5 md:py-5 px-2 md:px-12">
       <div className="flex items-center">
         <Link to="/">
-          <p className="text-white py-5 ml-12 cursor-pointer">Bot-Movies</p>
+          <p className="text-white cursor-pointer">Bot-Movies</p>
         </Link>
       </div>
-      {user && (
-        <p className="text-[#f9790e] py-5 mx-auto cursor-pointer hover:text-white">
-          <Link to="/playlists">My Playlists</Link>
-        </p>
-      )}
 
-      <FiLogOut
-        onClick={handleLogout}
-        className="h-6 w-6 text-white ml-auto mr-12 cursor-pointer"
-      />
-    </div>
+      <div className={`hidden md:${pathname !== '/' && 'block'}`}>
+        <SearchBar q={'t'} />
+      </div>
+
+      <div className="text-white cursor-pointer hover:text-[#f9790e]">
+        <Link to="/playlists">My Playlists</Link>
+      </div>
+
+      <div className="relative">
+        <FaUserNinja onClick={() => setDropdownState(!dropdownState)} className='text-white rounded-full h-8 w-8 outline outline-[#f9790e] py-0.5' />
+        {dropdownState &&
+          <div className="flex flex-col justify-center items-center absolute m-auto left-0 right-0 z-40">
+            <div className='triangle-up mx-auto mt-0.5' />
+            <div className='flex items-center divide-y divide-white-400 justify-center py-3 flex-col bg-[#f9790e] w-fit px-6 rounded rounded-lg'>
+              <Link to="/user/profile">
+                <p className="cursor-pointer text-black hover:text-white hover:opacity-70">Profile</p>
+              </Link>
+              <Link to="/friends">
+                <p className="cursor-pointer text-black hover:text-white hover:opacity-70">Friends</p>
+              </Link>
+              <Link to="/playlists">
+                <p className="cursor-pointer text-black hover:text-white hover:opacity-70">Playlists</p>
+              </Link>
+              <p onClick={handleLogout} className="cursor-pointer text-black hover:text-white hover:opacity-70">SignOut</p>
+            </div>
+          </div>
+        }
+      </div >
+    </div >
   );
 };
 

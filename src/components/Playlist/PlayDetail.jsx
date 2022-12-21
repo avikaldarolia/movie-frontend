@@ -6,8 +6,8 @@ import { IoMdArrowRoundBack } from 'react-icons/io';
 import { ImLock, ImUnlocked } from 'react-icons/im';
 import MovieCard from '../Movie/MovieCard';
 import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
 import { MdEdit } from 'react-icons/md';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import {
@@ -23,25 +23,28 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import { URL } from '../../config/config'
-
+import makeAxiosRequest from '../../utils/utils';
+import nomovie from '../../assets/nomovie.gif'
 const PlayDetail = () => {
+  const user = JSON.parse(Cookies.get('user'));
   const params = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const [playlist, setPlaylist] = useState();
-  const user = JSON.parse(Cookies.get('user'));
   const [isLoading, setIsLoading] = useState(true);
   const [deleteText, setDeleteText] = useState('')
+  const [reloadFlag, setReloadFlag] = useState(false)
+
   // TODO: Also add paranoid true in modals later on
   const handleDelete = async (e) => {
+    e.preventDefault()
     if (deleteText !== `${user.email}/${playlist.name}`) {
       toast.error("Text doesn't match")
       return;
     }
     try {
-      await axios.delete(`${URL}/playlist`, { data: { id: parseInt(params.id) } })
+      await makeAxiosRequest(`${URL}/playlist`, "DELETE", {}, { id: parseInt(params.id) })
       toast.success("Playlist Deleted")
       navigate('/playlists');
     } catch (err) {
@@ -51,19 +54,22 @@ const PlayDetail = () => {
   };
 
   useEffect(() => {
-    const getPlaylist = async () => {
-      let response = await axios.get(`${URL}/playlist`, { params: { id: parseInt(params.id) } })
-      setPlaylist(response.data.data.rows[0])
-      console.log("RES", response.data.data);
+    const getPlaylistWithMovies = async () => {
+      try {
+        let playlistWithMovies = await makeAxiosRequest(`${URL}/playlist/${params.id}`, "GET")
+        setPlaylist(playlistWithMovies.data.data)
+        console.log(playlistWithMovies.data.data);
+      } catch (err) {
+        toast.error('Something Went Wrong!')
+      }
       setIsLoading(false)
     }
-    if (user) {
-      getPlaylist()
-    }
-  }, [params.id])
+    getPlaylistWithMovies()
+
+  }, [params.id, reloadFlag])
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-[#F4F4F4] h-screen">
       <ToastContainer />
       <Navbar />
       {isLoading ? (
@@ -82,58 +88,60 @@ const PlayDetail = () => {
       ) : (
         <>
           <div className="w-full flex flex-col">
-            <div className="flex items-center ml-12 mt-8">
-              <Link to="/playlists">
-                <IoMdArrowRoundBack
-                  className="w-10 h-10 hover:fill-black cursor-pointer"
-                  style={{ color: '#f9790e' }}
-                />
-              </Link>
-              <div className="flex items-center rounded-xl py-5 bg-gray-200 ml-4 w-fit px-10 ">
-                <p className="text-5xl ">Movies in: {playlist?.name}</p>
-                <div className="ml-5 mt-1.5 flex items-center bg-white rounded-xl py-1 px-2">
+            <div className="w-full flex flex-col bg-gray-300 md:flex-row items-center py-2 md:py-5">
+              <div className="flex justify-between items-center w-11/12 md:w-4/5 md:mx-10">
+                <Link to="/playlists">
+                  <IoMdArrowRoundBack
+                    className="w-6 h-6 md:w-10 md:h-10 hover:fill-black cursor-pointer ml-4"
+                    style={{ color: '#f9790e' }}
+                  />
+                </Link>
+                <p className="text-2xl md:text-5xl">{playlist?.name}</p>
+                <div className="flex items-center bg-black text-white rounded-lg md:rounded-xl py-1 px-2 md:px-3">
                   {playlist?.isPrivate === true ? (
-                    <ImLock className="" style={{ color: '#f9790e' }} />
+                    <ImLock className="w-3 h-3" style={{ color: '#f9790e' }} />
                   ) : (
-                    <ImUnlocked className="mr-1" style={{ color: '#f9790e' }} />
+                    <ImUnlocked className="w-3 h-3 mr-1" style={{ color: '#f9790e' }} />
                   )}
-                  <p>{playlist?.isPrivate ? "Private" : "Public"}</p>
-                </div>
-
-                <div className="flex items-center ml-32 bg-white rounded-xl py-2 px-3">
-                  <button
-                    onClick={() => navigate(`/playlists/edit/${params.id}`)}
-                    className="flex items-center px-3 bg-[#f9790e] py-2 rounded-xl hover:bg-orange-600"
-                  >
-                    <MdEdit style={{ color: 'black' }} />
-                    <p className="pl-1">Edit</p>
-                  </button>
-                  <button className="ml-4 flex items-center px-3 bg-[#f9790e] py-2 rounded-xl hover:bg-orange-600">
-                    <AiTwotoneDelete style={{ color: 'black' }} />
-                    <p className="pl-1" onClick={onOpen}>
-                      Delete
-                    </p>
-                  </button>
+                  <p className='text-xs md:text-xl'>{playlist?.isPrivate ? "Private" : "Public"}</p>
                 </div>
               </div>
+
+              <div className="flex w-3/5 mx-4 md:w-2/5 justify-around items-center py-2 px-3">
+                <button
+                  onClick={() => navigate(`/playlists/edit/${params.id}`)}
+                  className="flex sm:text-sm items-center py-1 px-2 md:px-3 bg-black text-white rounded-lg md:rounded-xl"
+                >
+                  <MdEdit className='w-3 h-3' style={{ color: '#f9790e' }} />
+                  <p className="text-xs md:text-xl pl-1">Edit</p>
+                </button>
+                <button className="flex sm:text-sm items-center py-1 px-2 md:px-3 bg-black text-white rounded-lg md:rounded-xl hover:text-red-500">
+                  <AiTwotoneDelete className='w-3 h-3' style={{ color: '#f9790e' }} />
+                  <p className="text-xs md:text-xl pl-1" onClick={onOpen}>
+                    Delete
+                  </p>
+                </button>
+              </div>
             </div>
-            {/* code for movies will come here */}
-            {playlist === undefined || playlist?.length < 1 ? (
-              <p className="ml-32 mt-16 text-3xl">
-                Seems a bit empty here... <br /> Add some movies to see
-                the changes.
-              </p>
+            {playlist.Movies === undefined || playlist?.Movies.length < 1 ? (
+              <div className="flex flex-col">
+                <p className="mx-auto my-6 md:mt-12 md:text-3xl">
+                  Seems a bit empty here... <br /> Add some movies to see
+                  the changes.
+                </p>
+                <img className='md:mt-16 rounded rounded-xl object-fit w-4/5 md:w-fit bg-center mx-auto pointer-events-none' src={nomovie} alt="" />
+              </div>
             ) : (
-              <div className="grid md:grid-cols-4 gap-6 mx-32 mt-8">
-                {playlist?.movies?.map((movie, indx) => (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-10 md:mx-28 mt-4 md:mt-8">
+                {playlist?.Movies?.map((movie, indx) => (
                   <MovieCard
                     key={indx}
-                    name={movie.Title}
-                    poster={movie.Poster}
+                    name={movie.title}
+                    poster={movie.poster}
                     imdb={movie.imdbID}
-                    pid={params.id}
-                    userUid={playlist?.uid}
-                    playlist={playlist}
+                    mapping={movie.Playlist_Movie}
+                    setReloadFlag={setReloadFlag}
+                    reloadFlag={reloadFlag}
                   />
                 ))}
               </div>
@@ -158,8 +166,9 @@ const PlayDetail = () => {
 
               <ModalFooter>
                 <button
-                  className="text-white bg-black cursor-pointer px-3 py-2 rounded-xl"
+                  className={`text-white bg-red-500 cursor-pointer px-3 py-2 rounded-xl ${(deleteText !== (user.email + '/' + playlist.name).toString()) ? "opacity-70 cursor-not-allowed" : ""}`}
                   onClick={handleDelete}
+                  disabled={(deleteText !== `${user.email}/${playlist.name}`) ? true : false}
                 >
                   Delete
                 </button>

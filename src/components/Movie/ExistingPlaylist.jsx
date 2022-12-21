@@ -1,86 +1,78 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { URL } from '../../config/config'
+import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
-import { db } from '../../firebase-config';
+import { ToastContainer, toast } from 'react-toastify';
+import makeAxiosRequest from '../../utils/utils';
 
 const ExistingPlaylist = ({ onClose, movie, tabIndex }) => {
-  const user = useFirebaseAuth();
-  const [selected, setSelected] = useState();
-  const [playlist, setPlaylist] = useState();
+  const user = JSON.parse(Cookies.get('user'));
+  const [index, setIndex] = useState();
+  const [playlist, setPlaylist] = useState([]);
+
+  // TODO: fix toast
   const handleSave = async (e) => {
     e.preventDefault();
-    let selectedP = playlist?.find((p) => p.pid === selected);
-    let oldMovies = selectedP.movies;
-    let check = false;
-    let b = movie.imdbID;
-    for (let i = 0; i < oldMovies?.length; i++) {
-      if (strcmp(oldMovies[i].imdbID, b)) {
-        check = true;
-        break;
-      }
-    }
-    function strcmp(a, b) {
-      b = b.toString();
-      a = a.toString();
-      const n = b.length;
-      if (a.length === 0 || b.length === 0 || a.length !== b.length) {
-        return false;
-      }
-      for (let i = 0; i < n; i++) {
-        if (a.charAt(i) !== b.charAt(i)) {
-          return false;
-        }
-      }
-      return true;
-    }
-    if (check) {
-      toast.error('Movie already present inside this playlist');
-      return;
-    }
-    oldMovies.push(movie);
-    const playRef = doc(db, 'playlists', selectedP?.pid);
-    await updateDoc(playRef, {
-      movies: oldMovies,
-    });
-    onClose();
-  };
-  useEffect(() => {
-    const func = async () => {
-      await getDocs(collection(db, 'playlists'))
-        .then((res) => {
-          let list = res.docs
-            .map((doc) => doc.data())
-            .filter((li) => li.uid === user?.uid);
-          setPlaylist(list);
-        })
-        .catch((err) => console.log(err));
-    };
+    let selected = playlist[index]
 
-    func();
-  }, [user]);
+    try {
+      let fetchedMovie = await makeAxiosRequest(`${URL}/movie/fetch`, "POST", {}, movie)
+
+      let playlistMovieMapping = await makeAxiosRequest(`${URL}/playlist_movie/fetch`, "POST", {}, {
+        playlistId: parseInt(selected.id),
+        movieId: parseInt(fetchedMovie.data.data[0].id),
+      })
+
+      if (!playlistMovieMapping.data.data[1]) {
+        toast.error("Already present in the playlist")
+        return
+      }
+      toast.success('Added to playlist')
+      onClose();
+    } catch (err) {
+      toast.error('Something went wrong');
+    }
+  };
+
+  useEffect(() => {
+    const getPlaylists = async () => {
+      try {
+        let playlists = await makeAxiosRequest(`${URL}/playlist/userId/${user.id}`, "GET")
+        setPlaylist(playlists.data.data)
+
+      } catch (err) {
+        toast.error('Something went wrong')
+      }
+    }
+    getPlaylists()
+  }, [])
 
   return (
     <div className="flex flex-col">
       <ToastContainer />
       <p>Your Playlists</p>
-      <select
-        className="mt-4 py-2 w-fit px-2"
-        value={selected}
-        onChange={(e) => setSelected(e.target.value)}
-      >
-        <option value="Select a playlist">Select a playlist</option>
-        {playlist &&
-          playlist?.map((play, indx) => (
-            <option key={indx} value={play?.pid}>
-              {play?.name}
-            </option>
-          ))}
-      </select>
+      {playlist.length === 0 ? (
+        <p>You have no existing playlists yet!</p>
+      ) :
+        (<select
+          className="mt-4 py-2 w-full px-2"
+          value={index}
+          onChange={(e) => setIndex(e.target.value)}
+        >
+          <option value="Select a playlist">Select a playlist</option>
+          {playlist &&
+            playlist?.map((play, indx) => (
+              <option key={indx} value={indx}>
+                {play?.name}
+              </option>
+            ))}
+        </select>
+        )
+      }
       <button
-        className="bg-[#f9790e] px-3 py-2 rounded-xl hover:text-white mt-4"
+        className={`bg-[#f9790e] px-3 py-2 rounded-xl mt-4 ${playlist.length ? 'block hover:text-white' : 'opacity-30 cursor-not-allowed'} `}
+        disabled={!playlist.length}
         onClick={handleSave}
       >
         Save

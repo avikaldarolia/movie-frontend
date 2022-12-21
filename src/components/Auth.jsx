@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiHide } from 'react-icons/bi';
-import wall from '../assets/wall.jpeg';
+// import wall from '../assets/wall.jpeg';
+import homeMaybe from '../assets/homeMaybe.gif';
 import { URL } from "../config/config";
 import axios from 'axios';
 import Cookies from 'js-cookie'
 const Auth = ({ title }) => {
+  let jwt = Cookies.get('jwt')
   const navigate = useNavigate();
-  const [inputs, setInputs] = useState({ email: '', password: '' });
+  const [inputs, setInputs] = useState({ username: '', email: '', password: '' });
   const [show, setShow] = useState(false);
   const handleChange = (e) => {
     setInputs((prevState) => ({
@@ -18,12 +20,27 @@ const Auth = ({ title }) => {
       [e.target.name]: e.target.value,
     }));
   };
+  useEffect(() => {
+    if (jwt) {
+      return <Navigate to='/' />
+    }
+  }, [jwt])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // signup
     if (title !== 'Login') {
       try {
-        let response = await axios.post(`${URL}/auth/signup`, inputs)
+        let response = await axios.post(`${URL}/auth/signup`, inputs).catch(function (err) {
+          if (err.code === "ERR_NETWORK") {
+            toast.error('Server is not live')
+          }
+        })
+
+        if (!response) {
+          return;
+        }
+
         if (!response.data.success) {
           toast.error(response.data.error)
           return;
@@ -33,42 +50,62 @@ const Auth = ({ title }) => {
         Cookies.set('user', JSON.stringify(response.data.data.user))
         navigate('/')
       } catch (err) {
-        console.log(err);
+        if (err.toJSON().message === 'Network Error') {
+          toast.error('Server is not live')
+          return;
+        }
         toast.error('Invalid Credentials');
       }
     }
     // login
     else {
       try {
-        let response = await axios.post(`${URL}/auth/login`, inputs)
+        let response = await axios.post(`${URL}/auth/login`, inputs).catch(function (err) {
+          if (err.code === "ERR_NETWORK") {
+            toast.error('Server is not live')
+          }
+        })
+
+        if (!response) {
+          return;
+        }
+
         if (!response.data.success) {
           toast.error(response.data.error)
           return;
         }
-        console.log("RES", response.data);
         Cookies.set('jwt', JSON.stringify(response.data.data.jwt))
         Cookies.set('user', JSON.stringify(response.data.data.user))
         navigate('/')
+
       } catch (err) {
-        console.log(err);
-        toast.error('Invalid Credentials');
+        toast.error('Something went wrong');
       }
     }
   };
   return (
-    <div className="w-screen h-screen flex flex-col bg-black">
-      <p className="text-white mx-auto mt-16 text-5xl">Bot-Movies</p>
-      <div className="flex w-full mt-16 h-fit">
-        <div className="w-1/2 ml-64 bg-gray-200 rounded-tl-xl rounded-bl-xl">
+    <div className="w-full h-screen flex flex-col bg-black">
+      <p className="text-white mx-auto mt-12 md:mt-16 text-2xl md:text-5xl font-bold">Bot-Movies</p>
+      <div className="flex flex-col md:flex-row w-11/12 mx-auto md:mx-none md:w-full mt-8 md:mt-16">
+        <div className="w-1/2 ml-64 bg-gray-200 rounded-tl-xl rounded-bl-xl hidden md:block">
           <img
-            src={wall}
-            className="h-full w-fit rounded-tl-xl rounded-bl-xl"
+            src={homeMaybe}
+            className="w-full h-full rounded-tl-xl rounded-bl-xl"
             alt=""
           />
         </div>
-        <div className="flex flex-col mx-auto w-1/2 p-10 rounded-tr-xl rounded-br-xl bg-[#f9790e] mr-64">
+        <div className="flex flex-col mx-auto w-11/12 md:w-1/2 p-10 rounded-tl-xl md:rounded-tl-none rounded-tr-xl rounded-bl-xl md:rounded-bl-none rounded-br-xl bg-[#f9790e] md:mr-64">
           <ToastContainer />
           <p className="font-bold text-3xl py-2">{title}</p>
+          <label className={`my-2 text-lg ${title === 'Signup' ? 'block' : 'hidden'}`}>Username</label>
+          <input
+            onChange={handleChange}
+            name="username"
+            value={inputs.username}
+            type="text"
+            className={`py-2 rounded-lg pl-2 ${title === 'Signup' ? 'block' : 'hidden'}`}
+            placeholder="Username"
+          />
           <label className="my-2 text-lg">Email</label>
           <input
             onChange={handleChange}

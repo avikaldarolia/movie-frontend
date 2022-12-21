@@ -2,35 +2,44 @@ import { Radio, RadioGroup, Stack, Input } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase-config';
+import Cookies from 'js-cookie';
+import { URL } from '../../config/config';
+import makeAxiosRequest from '../../utils/utils';
 
 const NewPlaylistModal = ({ onClose, movie }) => {
-  const user = useFirebaseAuth();
+  const user = JSON.parse(Cookies.get('user'));
   const [val, setVal] = useState('1');
   const [name, setName] = useState('');
 
   const handleSave = async (e) => {
     e.preventDefault();
     if (name.length < 1) {
-      toast.error('No name entered');
+      toast.error('Please provide a name');
       return;
     }
-    let mode = 'public';
-    if (val === '2') {
-      mode = 'private';
+    let playlistData = {
+      name,
+      userId: parseInt(user.id),
+      isPrivate: val === '1' ? false : true
     }
-    const docRef = await addDoc(collection(db, 'playlists'), {
-      uid: user.uid,
-      name: name,
-      mode: mode,
-      movies: [movie],
-    });
-    const playRef = doc(db, 'playlists', docRef.id);
-    await updateDoc(playRef, {
-      pid: docRef.id,
-    });
+
+    try {
+      let newPlaylist = await makeAxiosRequest(`${URL}/playlist`, "POST", {}, playlistData)
+      if (!newPlaylist.data.data) {
+        toast.error(newPlaylist.data.error)
+        return;
+      }
+
+      let fetchedMovie = await makeAxiosRequest(`${URL}/movie/fetch`, "POST", {}, movie)
+      await makeAxiosRequest(`${URL}/playlist_movie/fetch`, "POST", {}, {
+        playlistId: parseInt(newPlaylist.data.data.id),
+        movieId: parseInt(fetchedMovie.data.data[0].id),
+      })
+      toast.success('Movie added to the new playlist!')
+    } catch (err) {
+      toast.error('Something went wrong');
+    }
+
     onClose();
   };
   return (
@@ -59,7 +68,7 @@ const NewPlaylistModal = ({ onClose, movie }) => {
         </Stack>
       </RadioGroup>
       <button
-        className="bg-[#f9790e] px-3 py-2 rounded-xl hover:text-white mt-4"
+        className="bg-[#f9790e] w-full px-3 py-2 rounded-xl hover:text-white mt-4"
         onClick={handleSave}
       >
         Save
