@@ -37,6 +37,10 @@ const Profile = () => {
     const [reloadFlag, setReloadFlag] = useState(false)
 
     useEffect(() => {
+        if (parseInt(profileId) === parseInt(loggedInUser.id)) {
+            navigate('/user/profile')
+            return
+        }
         const getUser = async () => {
             try {
                 let profUser = await makeAxiosRequest(`${URL}/user?id=${profileId}`, "GET")

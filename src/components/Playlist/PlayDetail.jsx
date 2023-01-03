@@ -36,7 +36,6 @@ const PlayDetail = () => {
   const [deleteText, setDeleteText] = useState('')
   const [reloadFlag, setReloadFlag] = useState(false)
 
-  // TODO: Also add paranoid true in modals later on
   const handleDelete = async (e) => {
     e.preventDefault()
     if (deleteText !== `${user.email}/${playlist.name}`) {

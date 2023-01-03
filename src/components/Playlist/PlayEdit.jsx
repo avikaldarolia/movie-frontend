@@ -13,14 +13,14 @@ const PlayEdit = () => {
   const navigate = useNavigate();
   const [playlist, setPlaylist] = useState();
   const [name, setName] = useState(playlist?.name);
-  const [val, setVal] = useState('1');
+  const [val, setVal] = useState(playlist?.isPrivate ? '2' : '1');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getPlay = async () => {
-      const play = await makeAxiosRequest(`${URL}/playlist`, "GET", { params: { id: parseInt(params.id) } })
-      setPlaylist(play.data.data.rows[0])
-      setName(play.data.data.rows[0].name)
+      const play = await makeAxiosRequest(`${URL}/playlist/${params.id}`, "GET")
+      setPlaylist(play.data.data)
+      setName(play.data.data.name)
       setIsLoading(false)
     };
     getPlay();
@@ -33,14 +33,18 @@ const PlayEdit = () => {
       return;
     }
     try {
-      let validNameCheck = await makeAxiosRequest(`${URL}/playlist/checkValidName`, "POST", {}, { name })
-      if (!validNameCheck.data.data) {
-        toast.error(validNameCheck.data.error)
+      if (name !== playlist?.name) {
+        let validNameCheck = await makeAxiosRequest(`${URL}/playlist/checkValidName`, "POST", {}, { name })
+        if (!validNameCheck.data.data) {
+          toast.error(validNameCheck.data.error)
+        }
+        return;
       }
 
-      await makeAxiosRequest(`${URL}/playlist/${playlist.id}`, "PUT", {}, { name, isPrivate: val !== '1' ? true : false })
+      await makeAxiosRequest(`${URL}/playlist/${params.id}`, "PUT", {}, { name, isPrivate: val !== '1' ? true : false })
       toast.success('Playlist updated')
       navigate(-1)
+      return;
     } catch (err) {
       toast.error('Something went wrong!')
       return
@@ -94,7 +98,7 @@ const PlayEdit = () => {
             value={val}
             onChange={setVal}
             className="mt-1 mx-auto rounded-lg py-1 md:py-2 w-4/5 px-4 outline outline-[#f9790e]"
-            defaultValue="1"
+            defaultValue={playlist.isPrivate ? "2" : "1"}
             background={'white'}
           >
             <Stack spacing={5} direction="row">

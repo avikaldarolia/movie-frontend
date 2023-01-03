@@ -33,7 +33,7 @@ function App() {
     <Routes>
       <Route element={<PrivateRoutes />}>
         <Route path="/" element={<Homepage />} />
-        <Route path="/chat" element={<Chat />} />
+        {/* <Route path="/chat" element={<Chat />} /> */}
         <Route path="/friends" element={<Friends />} />
         <Route path="/friends/requests/:status" element={<Requests />} />
         <Route path="/user/profile" element={<MyProfile />} />

@@ -3,7 +3,8 @@ import Navbar from '../Navbar'
 import io from 'socket.io-client'
 import Texting from './Texting'
 
-const socket = io.connect('http://localhost:8000')
+// const socket = io.connect('http://localhost:8000')
+const socket = [];
 
 const Chat = () => {
     const [username, setUsername] = useState();
