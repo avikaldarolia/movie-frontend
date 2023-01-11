@@ -1,8 +1,8 @@
 ## V1 for this project is already hosted (Tech stack: Reactjs, Firebase, TailwindCSS).
-### movie(V1) [site hosted](https://movie-weld.vercel.app/), Github repository: [repo](https://github.com/avikaldarolia/movie).
+### Movie(V1) [site hosted](https://movie-weld.vercel.app/), Github repository: [repo](https://github.com/avikaldarolia/movie).
 
 # V2 
-### Tech Stack (Frontend => Reactjs, TailwindCSS; Backend => Nodejs, Express, Sequelize ,PostgreSQL, Socket.io)
+### Tech Stack (Frontend: Reactjs, TailwindCSS; Backend: Nodejs, Express, Sequelize ,PostgreSQL, Socket.io)
 
 #### Since heroku is down :( the site is not hosted yet. Will be hosted soon ^-^. 
 
