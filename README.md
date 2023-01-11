@@ -4,7 +4,11 @@
 # V2 
 ### Tech Stack (Frontend => Reactjs, TailwindCSS; Backend => Nodejs, Express, Sequelize ,PostgreSQL, Socket.io)
 
+#### Since heroku is down :( the site is not hosted yet. Will be hosted soon ^-^. 
+
 ## How to run on local environment
+
+### You need backend as well to run this project, clone the backend repository from [here](https://github.com/avikaldarolia/movie-backend). 
 
 ### Clone the repo 
 
