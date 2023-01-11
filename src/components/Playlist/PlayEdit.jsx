@@ -37,11 +37,10 @@ const PlayEdit = () => {
         let validNameCheck = await makeAxiosRequest(`${URL}/playlist/checkValidName`, "POST", {}, { name })
         if (!validNameCheck.data.data) {
           toast.error(validNameCheck.data.error)
+          return;
         }
-        return;
       }
-
-      await makeAxiosRequest(`${URL}/playlist/${params.id}`, "PUT", {}, { name, isPrivate: val !== '1' ? true : false })
+      await makeAxiosRequest(`${URL}/playlist/${params.id}`, "PUT", {}, { name: name, isPrivate: val !== '1' ? true : false })
       toast.success('Playlist updated')
       navigate(-1)
       return;
@@ -80,7 +79,7 @@ const PlayEdit = () => {
         <div className="bg-black mx-auto py-4 md:py-10 mt-8 md:mt-16 w-4/5 md:w-2/5 rounded-xl md:rounded-2xl flex flex-col outline outline-[#f9790e]">
           <div className="flex items-center ml-3 md:ml-6">
             <IoMdArrowRoundBack
-              className="w-6 h-6 md:w-10 md:h-10 hover:fill-black cursor-pointer absolute"
+              className="w-6 h-6 md:w-10 md:h-10 hover:fill-white cursor-pointer absolute"
               style={{ color: '#f9790e' }}
               onClick={() => navigate(-1)}
             />
