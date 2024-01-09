@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { OMDB_API_KEY } from '../../config/config';
 
 const SearchMovieBar = ({ q }) => {
   const [query, setQuery] = useState('');
@@ -10,7 +11,7 @@ const SearchMovieBar = ({ q }) => {
   const handleQuery = async (e) => {
     e.preventDefault();
     await axios
-      .get(`//www.omdbapi.com/?apikey=55d8034d&${q}=${query}`)
+      .get(`//www.omdbapi.com/?apikey=${OMDB_API_KEY}&${q}=${query}`)
       .then((res) => {
         if (res.data.Response === 'False') {
           toast.error('No results found');

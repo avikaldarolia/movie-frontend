@@ -27,7 +27,6 @@ function App() {
     }
   }, [jwt]);
   return (
-    // <div className="">
     <Routes>
       <Route element={<PrivateRoutes />}>
         <Route path="/" element={<Homepage />} />
